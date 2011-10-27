@@ -33,7 +33,9 @@ OMF is a framework for controlling, instrumenting, and managing testbeds.
 
 Researchers use OMF to describe, execute, and analyse their experiments.
 
-Testbed owners use OMF to make resources in the testbed discoverable, control access to them, optimise their utilisation through virtualisation, and federate with other testbeds.
+Testbed owners use OMF to make resources in the testbed discoverable, 
+control access to them, optimise their utilisation through virtualisation, 
+and federate with other testbeds.
 
 endef
 
@@ -50,7 +52,7 @@ endef
 define Package/omf-resctl
 $(call Package/omf/Default)
   TITLE+=Resource Controller
-  DEPENDS:=omf
+  DEPENDS:=omf +wget +wireless-tools +pciutils
   # If installing OMF, defaults installing omf-resctl.
   DEFAULT=:y
 endef
