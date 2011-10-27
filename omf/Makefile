@@ -11,13 +11,7 @@ PKG_SOURCE_URL:=git://git.mytestbed.net/omf.git
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
-PKG_BUILD_DEPENDS:=omf/host
-PKG_INSTALL:=1
-PKG_BUILD_PARALLEL:=1
-
-include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/nls.mk
 
 define Package/omf/Default
   SECTION:=base
@@ -88,4 +82,3 @@ endef
 
 $(eval $(call BuildPackage,omf))
 $(eval $(call BuildPackage,omf-resctl))
-$(eval $(call HostBuild))
