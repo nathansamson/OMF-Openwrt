@@ -8,6 +8,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=omf-5.3.1-stable
 PKG_SOURCE_URL:=git://git.mytestbed.net/omf.git
+PKG_SOURCE_SUBDIR=omf
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
@@ -36,7 +37,7 @@ endef
 define Package/omf
 $(call Package/omf/Default)
   TITLE+=cOntrol and Management Framework
-  DEPENDS:=
+  DEPENDS+= +ruby-liblog4r +ruby-libxmpp4r
 endef
 
 define Package/omf/description
@@ -60,24 +61,20 @@ define Build/Compile
 	# Nothing to build, its ruby!!
 endef
 
-define Package/omf/install
+define Package/helper/install
 	# create directories
-	SUB_PACKAGE:=omf-common
-	
-	$(INSTALL_DIR) $(1)/usr/share/${SUB_PACKAGE}-$(PKG_VERSION)
-	$(INSTALL_DIR) $(1)/etc/${SUB_PACKAGE}-$(PKG_VERSION)
-	$(CP) $(BUILD_DIR)/${SUB_PACKAGE}/ruby/${SUB_PACKAGE}/* \
-		$(1)/usr/share/${SUB_PACKAGE}-$(PKG_VERSION)/
+	$(INSTALL_DIR) $(1)/usr/share/$(2)-$(PKG_VERSION)
+	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
+	$(CP) $(BUILD_DIR)/omf/$(2)/ruby/$(2)/* \
+		$(1)/usr/share/$(2)-$(PKG_VERSION)/
+endef
+
+define Package/omf/install
+$(call Package/helper/install,$(1),omf-common)
 endef
 
 define Package/omf-resctl/install
-	# create directories
-	SUB_PACKAGE:=omf-resctl
-	
-	$(INSTALL_DIR) $(1)/usr/share/${SUB_PACKAGE}-$(PKG_VERSION)
-	$(INSTALL_DIR) $(1)/etc/${SUB_PACKAGE}-$(PKG_VERSION)
-	$(CP) $(BUILD_DIR)/${SUB_PACKAGE}/ruby/${SUB_PACKAGE}/* \
-		$(1)/usr/share/${SUB_PACKAGE}-$(PKG_VERSION)/
+$(call Package/helper/install,$(1),omf-resctl)
 endef
 
 $(eval $(call BuildPackage,omf))
