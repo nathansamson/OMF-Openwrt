@@ -37,7 +37,7 @@ endef
 define Package/omf
 $(call Package/omf/Default)
   TITLE+=cOntrol and Management Framework
-  DEPENDS+= +ruby-liblog4r +ruby-libxmpp4r
+  DEPENDS+= +ruby-liblog4r +xmpp4r
 endef
 
 define Package/omf/description
@@ -55,7 +55,6 @@ endef
 define Package/omf-resctl/description
  Resource Controller.
 endef
-
 
 define Build/Compile
 	# Nothing to build, its ruby!!
