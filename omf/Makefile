@@ -64,12 +64,21 @@ define Package/helper/install
 	# create directories
 	$(INSTALL_DIR) $(1)/usr/share/$(2)-$(PKG_VERSION)
 	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
+	$(INSTALL_DIR) $(1)/usr/bin
+	
 	$(CP) $(BUILD_DIR)/omf/$(2)/ruby/$(2)/* \
 		$(1)/usr/share/$(2)-$(PKG_VERSION)/
+	$(CP) $(BUILD_DIR)/omf/$(2)/sbin/$(2) \
+		$(1)/usr/bin
+	$(CP) $(BUILD_DIR)/omf/$(2)/etc/$(2)/* \
+		$(1)/etc/$(2)-$(PKG_VERSION)
 endef
 
 define Package/omf/install
-$(call Package/helper/install,$(1),omf-common)
+	$(INSTALL_DIR) $(1)/usr/share/omf-common-$(PKG_VERSION)
+	
+	$(CP) $(BUILD_DIR)/omf/omf-common/ruby/omf-common/* \
+		$(1)/usr/share/omf-common-$(PKG_VERSION)/
 endef
 
 define Package/omf-resctl/install
