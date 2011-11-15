@@ -37,7 +37,7 @@ endef
 define Package/omf
 $(call Package/omf/Default)
   TITLE+=cOntrol and Management Framework
-  DEPENDS+= +ruby-log4r +xmpp4r
+  DEPENDS+= +ruby-log4r +xmpp4r +ruby-core +ruby-yaml
 endef
 
 define Package/omf/description
@@ -66,7 +66,7 @@ define Package/helper/install
 	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
 	$(INSTALL_DIR) $(1)/usr/bin
 	
-	$(CP) $(BUILD_DIR)/omf/$(2)/ruby/$(2)/* \
+	$(CP) $(BUILD_DIR)/omf/$(2)/ruby/* \
 		$(1)/usr/share/$(2)-$(PKG_VERSION)/
 	$(CP) $(BUILD_DIR)/omf/$(2)/sbin/$(2) \
 		$(1)/usr/bin
@@ -77,7 +77,7 @@ endef
 define Package/omf/install
 	$(INSTALL_DIR) $(1)/usr/share/omf-common-$(PKG_VERSION)
 	
-	$(CP) $(BUILD_DIR)/omf/omf-common/ruby/omf-common/* \
+	$(CP) $(BUILD_DIR)/omf/omf-common/ruby/* \
 		$(1)/usr/share/omf-common-$(PKG_VERSION)/
 endef
 
