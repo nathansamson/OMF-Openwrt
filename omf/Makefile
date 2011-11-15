@@ -2,15 +2,14 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=omf
 PKG_VERSION:=5.3
-PKG_RELEASE:=1
+PKG_RELEASE:=0
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+# Tries to download from openwrt => obviously this does not work, 
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=omf-5.3.1-stable
 PKG_SOURCE_URL:=git://git.mytestbed.net/omf.git
-PKG_SOURCE_SUBDIR=omf
-# Tries to download from openwrt => obviously this does not work, 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -66,18 +65,18 @@ define Package/helper/install
 	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
 	$(INSTALL_DIR) $(1)/usr/bin
 	
-	$(CP) $(BUILD_DIR)/omf/$(2)/ruby/* \
+	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/ruby/* \
 		$(1)/usr/share/$(2)-$(PKG_VERSION)/
-	$(CP) $(BUILD_DIR)/omf/$(2)/sbin/$(2) \
+	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/sbin/$(2) \
 		$(1)/usr/bin
-	$(CP) $(BUILD_DIR)/omf/$(2)/etc/$(2)/* \
+	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/etc/$(2)/* \
 		$(1)/etc/$(2)-$(PKG_VERSION)
 endef
 
 define Package/omf/install
 	$(INSTALL_DIR) $(1)/usr/share/omf-common-$(PKG_VERSION)
 	
-	$(CP) $(BUILD_DIR)/omf/omf-common/ruby/* \
+	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/omf-common/ruby/* \
 		$(1)/usr/share/omf-common-$(PKG_VERSION)/
 endef
 
