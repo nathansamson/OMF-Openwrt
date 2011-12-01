@@ -55,6 +55,10 @@ define Package/omf-resctl/description
  Resource Controller.
 endef
 
+define Package/omf-resctl/conffiles
+/etc/omf-resctl-$(PKG_VERSION)/omf-resctl.yaml
+endef
+
 define Build/Compile
 	# Nothing to build, its ruby!!
 endef
@@ -71,6 +75,8 @@ define Package/helper/install
 		$(1)/usr/bin
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/etc/$(2)/* \
 		$(1)/etc/$(2)-$(PKG_VERSION)
+	
+	$(INSTALL_DATA) ./files/$(2à.conf $(1)/etc/$(2)-$(PKG_VERSION)/
 endef
 
 define Package/omf/install
