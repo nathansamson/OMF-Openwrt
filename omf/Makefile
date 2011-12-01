@@ -68,6 +68,7 @@ define Package/helper/install
 	$(INSTALL_DIR) $(1)/usr/share/$(2)-$(PKG_VERSION)
 	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
 	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/etc/init.d/
 	
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/ruby/* \
 		$(1)/usr/share/$(2)-$(PKG_VERSION)/
@@ -75,8 +76,9 @@ define Package/helper/install
 		$(1)/usr/bin
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/etc/$(2)/* \
 		$(1)/etc/$(2)-$(PKG_VERSION)
+	$(CP) ./files/$(2).init $(1)/etc/init.d/
 	
-	$(INSTALL_DATA) ./files/$(2à.conf $(1)/etc/$(2)-$(PKG_VERSION)/
+	$(INSTALL_DATA) ./files/$(2).yaml $(1)/etc/$(2)-$(PKG_VERSION)/
 endef
 
 define Package/omf/install

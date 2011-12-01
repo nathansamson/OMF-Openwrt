@@ -1,0 +1,11 @@
+#!/bin/sh /etc/rc.common
+#
+# omf-resctl init script to start omf-resctl daemon
+#
+START=80
+
+
+start(){
+	omf-resclt &	
+}
+
