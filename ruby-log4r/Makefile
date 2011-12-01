@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby-log4r
 PKG_VERSION:=1.1.9
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=master
@@ -11,6 +11,8 @@ PKG_SOURCE_SUBDIR:=log4r
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_SOURCE_SUBDIR)
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
+
+RUBY_LIB_VER:=1.8
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -44,9 +46,9 @@ define Build/Compile
 endef
 
 define Package/ruby-log4r/install
-	$(INSTALL_DIR) $(1)/usr/lib/ruby/1.9/
-	$(CP) $(PKG_BUILD_DIR)/lib/log4r $(1)/usr/lib/ruby/1.9/
-	$(CP) $(PKG_BUILD_DIR)/lib/log4r.rb $(1)/usr/lib/ruby/1.9/
+	$(INSTALL_DIR) $(1)/usr/lib/ruby/$(RUBY_LIB_VER)/
+	$(CP) $(PKG_BUILD_DIR)/lib/log4r $(1)/usr/lib/ruby/$(RUBY_LIB_VER)/
+	$(CP) $(PKG_BUILD_DIR)/lib/log4r.rb $(1)/usr/lib/ruby/$(RUBY_LIB_VER)/
 endef
 
 $(eval $(call BuildPackage,ruby-log4r))
