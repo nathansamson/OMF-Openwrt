@@ -1,0 +1,15 @@
+--- a/omf-resctl/ruby/omf-resctl/omf_driver/atheros.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_driver/atheros.rb
+@@ -45,9 +45,9 @@ class AtherosDevice < WirelessDevice
+   def initialize(logicalName, deviceName)
+     super(logicalName, deviceName)
+     @driver = 'ath_pci'
+-    @wlanconfig = '/sbin/wlanconfig'
+-    @iwconfig = '/sbin/iwconfig'
+-    @iwpriv = '/sbin/iwpriv'
++    @wlanconfig = '/usr/sbin/wlanconfig'
++    @iwconfig = '/usr/sbin/iwconfig'
++    @iwpriv = '/usr/sbin/iwpriv'
+     @toolVersion = getToolVersion
+   end
+ 
