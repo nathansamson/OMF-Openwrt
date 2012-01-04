@@ -36,7 +36,7 @@ endef
 define Package/omf
 $(call Package/omf/Default)
   TITLE+=cOntrol and Management Framework
-  DEPENDS+= +ruby-log4r +xmpp4r +ruby-core +ruby-yaml
+  DEPENDS+= +ruby-log4r +xmpp4r +ruby-core +ruby-yaml +ruby-enc +ruby-rexml +ruby-openssl
 endef
 
 define Package/omf/description
