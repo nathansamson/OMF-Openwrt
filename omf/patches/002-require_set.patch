@@ -1,0 +1,11 @@
+--- a/omf-common/ruby/omf-common/omfProtocol.rb
++++ b/omf-common/ruby/omf-common/omfProtocol.rb
+@@ -28,6 +28,8 @@
+ # the OMF entities to communicate with each other
+ #
+ 
++require 'set'
++
+ module OmfProtocol
+ 
+   # Commands issued by the EC
