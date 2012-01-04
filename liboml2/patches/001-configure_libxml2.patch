@@ -1,0 +1,28 @@
+--- a/configure.ac
++++ b/configure.ac
+@@ -29,18 +29,20 @@ AC_SUBST([OML_VER_PATCH_LT], [`echo "$PA
+ AC_SUBST([pkglocalstatedir], [${localstatedir}/${PACKAGE}])
+ 
+ # Check that libxml2 is installed, and work out how to compile/link against it
+-AC_CHECK_LIB([xml2], [xmlParseFile], [AC_DEFINE([HAVE_LIBXML2], [1], [Define if libxml2 is installed.])], [missing_libs+=" libxml2"])
+-AC_PATH_PROG([HAVE_XML2CFG], [xml2-config])
++#AC_CHECK_LIB([xml2], [xmlParseFile], [AC_DEFINE([HAVE_LIBXML2], [1], [Define if libxml2 is installed.])], [missing_libs+=" libxml2"])
++AC_PATH_PROG([HAVE_LIBXML2], [xml2-config])
+ 
+-if test "x$HAVE_XML2CFG" != "x"; then
+-   xxCFLAGS=`$HAVE_XML2CFG --cflags`
+-   xxLIBS=`$HAVE_XML2CFG --libs`
++if test "x$HAVE_LIBXML2" != "x"; then
++   xxCFLAGS=`$HAVE_LIBXML2 --cflags`
++   xxLIBS=`$HAVE_LIBXML2 --libs`
+    AC_SUBST([LIBXML2_CFLAGS], [$xxCFLAGS])
+    AC_SUBST([LIBXML2_LIBS], [$xxLIBS])
+    AC_MSG_CHECKING([how to include libxml2 headers])
+    AC_MSG_RESULT([$LIBXML2_CFLAGS])
+    AC_MSG_CHECKING([how to link with libxml2])
+    AC_MSG_RESULT([$LIBXML2_LIBS])
++else
++  missing_libs+=" libxml2"
+ fi
+ 
+ # Check for presence of other libraries.
