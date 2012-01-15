@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=omf
-PKG_VERSION:=5.3
+PKG_VERSION:=5.4
 PKG_RELEASE:=0
 
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=omf-5.3.1-stable
+PKG_SOURCE_VERSION:=omf-5.4
 PKG_SOURCE_URL:=git://git.mytestbed.net/omf.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
@@ -19,7 +19,7 @@ define Package/omf/Default
   DEFAULT:=n
   TITLE:=OMF
   URL:=http://mytestbed.net
-  DEPENDS+= +ruby
+  DEPENDS+= +ruby +ruby-gems
 endef
 
 define Package/omf/Default/description
@@ -86,6 +86,10 @@ define Package/omf/install
 	
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/omf-common/ruby/* \
 		$(1)/usr/share/omf-common-$(PKG_VERSION)/
+		
+	$(INSTALL_DIR) $(1)/usr/lib/ruby/1.8/wss4r/security/util
+	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/wss4r/xmlcanonicalizer.rb \
+		$(1)/usr/lib/ruby/1.8/wss4r/security/util/
 endef
 
 define Package/omf-resctl/install

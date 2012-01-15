@@ -1,12 +1,12 @@
 --- a/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
 +++ b/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
-@@ -402,6 +402,9 @@ end
- if (File.exist?("/usr/bin/lspci"))
-   # Debian/Ubuntu
-   LSPCI="/usr/bin/lspci"
-+elsif (File.exists?("/usr/sbin/lspci"))
-+  #OpenWRT
-+  LSPCI="/usr/sbin/lspci"
+@@ -432,6 +432,9 @@ if (File.exist?("/usr/bin/lspci"))
  elsif (File.exist?("/sbin/lspci"))
    # Fedora
-   LSPCI="/sbin/lspci"
+   lspci="/sbin/lspci"
++elsif (File.exist?("/usr/sbin/lspci"))
++  # OpenWRT
++  lspci="/usr/sbin/lspci"
+ else
+   MObject.info "lspci not found, unable to detect the wireless hardware. Please install the 'pciutils' package."
+ end
