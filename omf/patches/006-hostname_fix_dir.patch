@@ -1,0 +1,24 @@
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/agentSubstitution.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/agentSubstitution.rb
+@@ -50,7 +50,7 @@ module AgentSubstitutions
+ 
+   # Substitute '%hostname%' with the hostname of this agent as given by /bin/hostname
+   def AgentSubstitutions.hostname(controller)
+-    return `/bin/hostname`.chomp
++    return `/usr/bin/hostname`.chomp
+   end
+ 
+   # FOR WINLAB...
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
+@@ -376,8 +376,8 @@ class NodeAgent < MObject
+       raise "Name or Slice are not defined in config file or as arguments!"
+     end
+     # substitute hostname or mac addr, if required
+-    @config[:agent][:name].gsub!(/%hostname%/, `/bin/hostname`.chomp)
+-    @config[:agent][:name].gsub!(/%fqdn%/, `/bin/hostname --fqdn`.chomp)
++    @config[:agent][:name].gsub!(/%hostname%/, `/usr/bin/hostname`.chomp)
++    @config[:agent][:name].gsub!(/%fqdn%/, `/usr/bin/hostname --fqdn`.chomp)
+     @config[:agent][:name].gsub!(/%macaddr%/, `ifconfig #{@config[:communicator][:control_if]} | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'`.chomp)
+     @agentName = @config[:agent][:name] 
+     @agentSlice =  @config[:agent][:slice] 
