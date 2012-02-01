@@ -12,7 +12,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_SOURCE_SUBDIR)
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
-RUBY_LIB_VER:=1.8
+RUBY_LIB_VER:=1.9
 
 include $(INCLUDE_DIR)/package.mk
 

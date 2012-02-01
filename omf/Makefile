@@ -11,6 +11,8 @@ PKG_SOURCE_VERSION:=omf-5.4
 PKG_SOURCE_URL:=git://git.mytestbed.net/omf.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
+RUBY_LIB_VER:=1.9
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/omf/Default
@@ -46,7 +48,7 @@ endef
 define Package/omf-resctl
 $(call Package/omf/Default)
   TITLE+=Resource Controller
-  DEPENDS:=omf +wget +wireless-tools +pciutils
+  DEPENDS:=omf +wget +wireless-tools +pciutils +net-tools-hostname +kmod-madwifi
   # If installing OMF, defaults installing omf-resctl.
   DEFAULT=:y
 endef
@@ -87,9 +89,9 @@ define Package/omf/install
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/omf-common/ruby/* \
 		$(1)/usr/share/omf-common-$(PKG_VERSION)/
 		
-	$(INSTALL_DIR) $(1)/usr/lib/ruby/1.8/wss4r/security/util
+	$(INSTALL_DIR) $(1)/usr/lib/ruby/$(RUBY_LIB_VER)/wss4r/security/util
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/wss4r/xmlcanonicalizer.rb \
-		$(1)/usr/lib/ruby/1.8/wss4r/security/util/
+		$(1)/usr/lib/ruby/$(RUBY_LIB_VER)/wss4r/security/util/
 endef
 
 define Package/omf-resctl/install
