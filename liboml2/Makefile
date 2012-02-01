@@ -27,13 +27,20 @@ define Package/liboml2
 endef
 
 define Package/liboml2/description
-OMF is a framework for controlling, instrumenting, and managing testbeds.
+OML is a measurement library that allows application writers to define 
+customizable measurement points inside applications. Experimenters running 
+the applications can then direct the measurement streams from these measurement 
+points to storage in a remote measurement database. OML was originally conceived
+to provide measurement facilities within the OMF Testbed Management Framework, 
+but can also be run independent of OMF.
 
-Researchers use OMF to describe, execute, and analyse their experiments.
-
-Testbed owners use OMF to make resources in the testbed discoverable, 
-control access to them, optimise their utilisation through virtualisation, 
-and federate with other testbeds.
+This is the client library. 
+OML is a measurement library that allows application writers to define 
+customizable measurement points inside applications. Experimenters running the 
+applications can then direct the measurement streams from these measurement
+points to storage in a remote measurement database. OML was originally 
+conceived to provide measurement facilities within the OMF Testbed Management 
+Framework, but can also be run independent of OMF.
 endef
 
 define Build/InstallDev

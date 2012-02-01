@@ -26,13 +26,22 @@ define Package/oml2-apps
 endef
 
 define Package/oml2-apps/description
-OMF is a framework for controlling, instrumenting, and managing testbeds.
+OML is a measurement library that allows application writers to define 
+customizable measurement points inside applications. Experimenters running 
+the applications can then direct the measurement streams from these measurement 
+points to storage in a remote measurement database. OML was originally conceived
+to provide measurement facilities within the OMF Testbed Management Framework, 
+but can also be run independent of OMF.
 
-Researchers use OMF to describe, execute, and analyse their experiments.
+This is a set of applications that collect measurements.
+It consists of the following applications.
 
-Testbed owners use OMF to make resources in the testbed discoverable, 
-control access to them, optimise their utilisation through virtualisation, 
-and federate with other testbeds.
+    oml2-otg2
+    oml2-otr2
+    oml2-gpslogger -- The GPS app;
+    oml2-wlanconfig -- Records wifi info from wlanconfig;
+    ripwave-monitor
+
 endef
 
 define Package/oml2-apps/install
@@ -44,23 +53,23 @@ define Package/oml2-apps/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-gpslogger \
-		$(1)/usr/lib/
+		$(1)/usr/bin/
 		
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-otg2 \
-		$(1)/usr/lib/
+		$(1)/usr/bin/
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-otr2 \
-		$(1)/usr/lib/
+		$(1)/usr/bin/
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-wlanconfig \
-		$(1)/usr/lib/
+		$(1)/usr/bin/
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/ripwave-monitor \
-		$(1)/usr/lib/
+		$(1)/usr//
 endef
 
 $(eval $(call BuildPackage,oml2-apps))
