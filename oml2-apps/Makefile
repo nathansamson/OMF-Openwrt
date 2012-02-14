@@ -22,7 +22,7 @@ define Package/oml2-apps
   DEFAULT:=n
   TITLE:=OML2 Applications
   URL:=http://mytestbed.net
-  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd
+  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd +libsigar
 endef
 
 define Package/oml2-apps/description

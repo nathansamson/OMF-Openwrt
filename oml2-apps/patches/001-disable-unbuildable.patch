@@ -4,7 +4,7 @@
  ACLOCAL_AMFLAGS = -I m4 -Wnone
  
 -SUBDIRS = gpslogger omf_nmetrics omf_trace otg wlanconfig simple ripwave_monitor
-+SUBDIRS = gpslogger otg wlanconfig simple ripwave_monitor
++SUBDIRS = gpslogger omf_nmetrics otg wlanconfig simple ripwave_monitor
 --- a/configure.ac
 +++ b/configure.ac
 @@ -16,7 +16,7 @@ AC_CONFIG_FILES([Makefile
@@ -12,7 +12,7 @@
  		])
  
 -AC_CONFIG_SUBDIRS([gpslogger omf_nmetrics omf_trace otg ripwave_monitor wlanconfig])
-+AC_CONFIG_SUBDIRS([gpslogger otg ripwave_monitor wlanconfig])
++AC_CONFIG_SUBDIRS([gpslogger omf_nmetrics otg ripwave_monitor wlanconfig])
  
  # Generate output files
  AC_OUTPUT
