@@ -6,6 +6,6 @@ START=80
 
 
 start(){
-	omf-resclt &	
+	omf-resctl &	
 }
 
