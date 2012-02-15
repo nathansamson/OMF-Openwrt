@@ -48,7 +48,7 @@ endef
 define Package/omf-resctl
 $(call Package/omf/Default)
   TITLE+=Resource Controller
-  DEPENDS:=omf +wget +wireless-tools +pciutils +net-tools-hostname +kmod-madwifi
+  DEPENDS:=omf +wget +wireless-tools +pciutils +net-tools-hostname +kmod-madwifi +@BUSYBOX_CONFIG_MODPROBE
   # If installing OMF, defaults installing omf-resctl.
   DEFAULT=:y
 endef

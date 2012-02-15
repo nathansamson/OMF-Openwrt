@@ -36,8 +36,8 @@ but can also be run independent of OMF.
 This is a set of applications that collect measurements.
 It consists of the following applications.
 
-    oml2-otg2
-    oml2-otr2
+    oml2-otg2 (as otg2)
+    oml2-otr2 (as otr2)
     oml2-gpslogger -- The GPS app;
     oml2-wlanconfig -- Records wifi info from wlanconfig;
     ripwave-monitor
@@ -57,11 +57,11 @@ define Package/oml2-apps/install
 		
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-otg2 \
-		$(1)/usr/bin/
+		$(1)/usr/bin/otg2
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-otr2 \
-		$(1)/usr/bin/
+		$(1)/usr/bin/otr2
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-wlanconfig \

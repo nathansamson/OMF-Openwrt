@@ -23,7 +23,7 @@ define Package/liboml2
   DEFAULT:=n
   TITLE:=OML2 Library
   URL:=http://mytestbed.net
-  DEPENDS:=+libxml2 +libsqlite3 +libpopt
+  DEPENDS:=+libxml2 +libsqlite3 +libpopt +libstdcpp
 endef
 
 define Package/liboml2/description
