@@ -2,12 +2,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libsigar
 PKG_VERSION:=1.6.999
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE_URL:=git://github.com/hyperic/sigar.git
+PKG_SOURCE_URL:=https://github.com/hyperic/sigar.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_FIXUP:=autoreconf
