@@ -2,11 +2,11 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby-log4r
 PKG_VERSION:=1.1.9
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=master
-PKG_SOURCE_URL:=git://github.com/colbygk/log4r.git
+PKG_SOURCE_URL:=https://github.com/colbygk/log4r.git
 PKG_SOURCE_SUBDIR:=log4r
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_SOURCE_SUBDIR)
 # Tries to download from openwrt => obviously this does not work, 
