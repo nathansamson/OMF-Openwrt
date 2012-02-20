@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=oml2-apps
 PKG_VERSION:=2.5.0
-PKG_RELEASE:=0
+PKG_RELEASE:=1
 PKG_SOURCE_ID:=582
 
 
@@ -22,7 +22,7 @@ define Package/oml2-apps
   DEFAULT:=n
   TITLE:=OML2 Applications
   URL:=http://mytestbed.net
-  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd +libsigar
+  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd +libsigar +libpcap
 endef
 
 define Package/oml2-apps/description
