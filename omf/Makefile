@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=omf
 PKG_VERSION:=5.4
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
@@ -48,7 +48,7 @@ endef
 define Package/omf-resctl
 $(call Package/omf/Default)
   TITLE+=Resource Controller
-  DEPENDS:=omf +wget +wireless-tools +pciutils +net-tools-hostname +kmod-madwifi +@BUSYBOX_CONFIG_MODPROBE
+  DEPENDS:=omf +wget +wireless-tools +pciutils +net-tools-hostname +@BUSYBOX_CONFIG_MODPROBE
   # If installing OMF, defaults installing omf-resctl.
   DEFAULT=:y
 endef
