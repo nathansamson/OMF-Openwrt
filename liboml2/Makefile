@@ -3,13 +3,13 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=liboml2
 PKG_VERSION:=2.6.1
 PKG_RELEASE:=0
-PKG_SOURCE_ID:=583
+PKG_SOURCE_ID:=641
 
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/oml2-$(PKG_VERSION)
 PKG_SOURCE:=oml2-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://omf.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
-PKG_MD5SUM=d11c1cfb55488cf7f1ec1c6ede68bca4
+PKG_MD5SUM=06675c1548f7dd7fc2be4884d9ffe247
 PKG_CAT:=zcat
 PKG_FIXUP:=autoreconf
 
