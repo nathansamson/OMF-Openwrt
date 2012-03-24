@@ -64,12 +64,12 @@ define Build/InstallDev
 	
 	$(INSTALL_DIR) $(2)/bin
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/bin/oml2_scaffold \
-		$(2)/bin/
+		$(PKG_INSTALL_DIR)/usr/bin/oml2-scaffold \
+		$(2)/bin/oml2_scaffold
 	
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/oml2-scaffold \
-		$(2)/bin/
+		$(2)/bin/oml2-scaffold
 endef
 
 define Package/liboml2/install

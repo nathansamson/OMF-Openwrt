@@ -1,0 +1,27 @@
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
+@@ -461,16 +461,16 @@ if (lspci)
+       AgentCommands::DEV_MAPPINGS['net/w1'] = IntelDevice.new('net/w1', 'eth3')
+     end
+   }
++#  IO.popen("#{lspci} | grep 'Ethernet controller: Atheros' | wc -l") {|p|
++#    if p.gets.to_i > 0
++#      require 'omf-resctl/omf_driver/atheros'
++#      MObject.info "Have Atheros cards - Using MadWifi driver"
++#      AgentCommands::DEV_MAPPINGS['net/w0'] = AtherosDevice.new('net/w0', 'ath0')
++#      AgentCommands::DEV_MAPPINGS['net/w1'] = AtherosDevice.new('net/w1', 'ath1')
++#    end
++#  }
+   IO.popen("#{lspci} | grep 'Ethernet controller: Atheros' | wc -l") {|p|
+     if p.gets.to_i > 0
+-      require 'omf-resctl/omf_driver/atheros'
+-      MObject.info "Have Atheros cards - Using MadWifi driver"
+-      AgentCommands::DEV_MAPPINGS['net/w0'] = AtherosDevice.new('net/w0', 'ath0')
+-      AgentCommands::DEV_MAPPINGS['net/w1'] = AtherosDevice.new('net/w1', 'ath1')
+-    end
+-  }
+-  IO.popen("#{lspci} | grep 'Network controller: Atheros' | wc -l") {|p|
+-    if p.gets.to_i > 0
+       require 'omf-resctl/omf_driver/ath9k'
+       MObject.info "Have Atheros cards - Using ath9k driver"
+       AgentCommands::DEV_MAPPINGS['net/w0'] = Ath9kDevice.new('net/w0', 'wlan0')
