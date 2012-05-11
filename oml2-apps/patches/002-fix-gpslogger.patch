@@ -1,0 +1,19 @@
+--- a/gpslogger/Makefile.am
++++ b/gpslogger/Makefile.am
+@@ -6,7 +6,7 @@ bin_PROGRAMS = oml2-gpslogger
+ 
+ oml2_gpslogger_SOURCES = gpslogger.c
+ 
+-oml2_gpslogger_LDADD = -loml2 -lgps
++oml2_gpslogger_LDADD = -loml2 -lgps -lm
+ 
+ installed_name = oml2-$(progname)$(EXEEXT)
+ installed_link_name = $(DESTDIR)$(bindir)/$(progname)_oml2$(EXEEXT)
+--- a/simple/Makefile.am
++++ b/simple/Makefile.am
+@@ -4,4 +4,4 @@ noinst_PROGRAMS = oml_ex_simple
+ 
+ oml_ex_simple_SOURCES = generator.c
+ 
+-oml_ex_simple_LDADD = -loml2 -locomm -lpopt
++oml_ex_simple_LDADD = -loml2 -locomm -lpopt -lm
