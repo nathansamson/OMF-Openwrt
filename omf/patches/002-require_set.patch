@@ -1,5 +1,5 @@
---- a/omf-common/ruby/omf-common/omfProtocol.rb
-+++ b/omf-common/ruby/omf-common/omfProtocol.rb
+--- a/omf-common/ruby/omf-common/communicator/omfProtocol.rb
++++ b/omf-common/ruby/omf-common/communicator/omfProtocol.rb
 @@ -28,6 +28,8 @@
  # the OMF entities to communicate with each other
  #
