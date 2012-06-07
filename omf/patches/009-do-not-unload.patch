@@ -1,0 +1,15 @@
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
+@@ -190,9 +190,9 @@ class NodeAgent < MObject
+     info "\n\n------------ RESET ------------\n"
+     ExecApp.killAll
+     AgentCommands.reset_links
+-    AgentCommands::DEV_MAPPINGS.each do |key,device|
+-      device.unload
+-    end
++    #AgentCommands::DEV_MAPPINGS.each do |key,device|
++    #  device.unload
++    #end
+     resetState
+     RCCommunicator.instance.reset
+   end

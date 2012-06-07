@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=omf
-PKG_VERSION:=5.4
-PKG_RELEASE:=2
+PKG_VERSION:=5.4.1
+PKG_RELEASE:=1
 
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=omf-5.4
+PKG_SOURCE_VERSION:=omf-5.4.1
 PKG_SOURCE_URL:=https://github.com/nathansamson/OMF.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
