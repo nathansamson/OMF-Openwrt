@@ -134,3 +134,45 @@
            else
              raise "Unknown mode '#{value}'. Should be 'managed', or 'ad-hoc'."
          end
+--- a/omf-common/ruby/omf-common/communicator/xmpp/omfXMPPServices.rb
++++ b/omf-common/ruby/omf-common/communicator/xmpp/omfXMPPServices.rb
+@@ -224,7 +224,7 @@ class OmfXMPPServices < MObject
+     callingThread = Thread.new(&block) 
+     success = callingThread.join(GATEWAY_TIMEOUT) 
+     if !success
+-      callingThread.kill!
++      callingThread.kill
+       warn "#{message}"
+     end
+     return success
+@@ -563,7 +563,7 @@ class OmfXMPPServices < MObject
+   def stop
+     debug "Exiting!"
+     begin
+-      @keepAliveThread.kill! if @keepAliveThread
++      @keepAliveThread.kill if @keepAliveThread
+       call_with_timeout("Timing out closing connection to the PubSub Gateway "+
+                         "'#{@homeServer}}'") { 
+                         @clientHelper.remove_registration
+--- a/omf-expctl/ruby/omf-expctl/communicator/ecCommunicator.rb
++++ b/omf-expctl/ruby/omf-expctl/communicator/ecCommunicator.rb
+@@ -107,7 +107,7 @@ class ECCommunicator < OmfCommunicator
+  
+   def reset
+     if @@retrySending
+-      @@retryThread.kill!
++      @@retryThread.kill
+       @@retryQueue = nil
+       @@retrySending = false
+     end
+--- a/omf-expctl/ruby/omf-expctl/event.rb
++++ b/omf-expctl/ruby/omf-expctl/event.rb
+@@ -151,7 +151,7 @@ class Event < MObject
+  
+   def Event.purge_all
+     @@events.each { |name, attributes|
+-      attributes[:thread].kill! if attributes[:running] && attributes[:thread]
++      attributes[:thread].kill if attributes[:running] && attributes[:thread]
+     }
+     @@events.clear
+   end
