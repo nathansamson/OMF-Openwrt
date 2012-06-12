@@ -3,9 +3,26 @@
 # omf-resctl init script to start omf-resctl daemon
 #
 START=80
+NAME=omf-resctl-5.4
 
+stop() {
+         if [ "x$(pidof $NAME)" != "x" ]; then
+                pids=$(pidof $NAME)
+                echo "Stopping $pids"
+                kill -9 $pids
+                sleep 2
+        else
+                echo "Not running"
+        fi
+}
 
 start(){
-	omf-resctl &	
+        if [ "x$(pidof $NAME)" != "x" ]; then
+                echo "Already started, do not restart"
+                exit 1;
+        fi
+
+        start-stop-daemon -b -S -x /usr/bin/omf-resctl
 }
+
 

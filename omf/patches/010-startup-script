@@ -1,5 +1,11 @@
 --- a/omf-resctl/sbin/omf-resctl
 +++ b/omf-resctl/sbin/omf-resctl
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # Copyright (c) 2006-2009 National ICT Australia (NICTA), Australia
+ #
 @@ -34,4 +34,5 @@ else
     echo "Cannot find the ruby module location ($APP)."
     exit 1;
