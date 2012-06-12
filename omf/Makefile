@@ -3,11 +3,12 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=omf
 PKG_VERSION:=5.4.1
 PKG_RELEASE:=1
+MAJOR_MINOR_VERSION=5.4
 
 # Tries to download from openwrt => obviously this does not work, 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=omf-5.4.1
+PKG_SOURCE_VERSION:=confine-5.4.1
 PKG_SOURCE_URL:=https://github.com/nathansamson/OMF.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 
@@ -58,7 +59,7 @@ define Package/omf-resctl/description
 endef
 
 define Package/omf-resctl/conffiles
-/etc/omf-resctl-$(PKG_VERSION)/omf-resctl.yaml
+/etc/omf-resctl-$(MAJOR_MINOR_VERSION)/omf-resctl.yaml
 endef
 
 define Build/Compile
@@ -67,27 +68,27 @@ endef
 
 define Package/helper/install
 	# create directories
-	$(INSTALL_DIR) $(1)/usr/share/$(2)-$(PKG_VERSION)
-	$(INSTALL_DIR) $(1)/etc/$(2)-$(PKG_VERSION)
+	$(INSTALL_DIR) $(1)/usr/share/$(2)-$(MAJOR_MINOR_VERSION)
+	$(INSTALL_DIR) $(1)/etc/$(2)-$(MAJOR_MINOR_VERSION)
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/etc/init.d/
 	
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/ruby/* \
-		$(1)/usr/share/$(2)-$(PKG_VERSION)/
+		$(1)/usr/share/$(2)-$(MAJOR_MINOR_VERSION)/
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/sbin/$(2) \
 		$(1)/usr/bin
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/$(2)/etc/$(2)/* \
-		$(1)/etc/$(2)-$(PKG_VERSION)
+		$(1)/etc/$(2)-$(MAJOR_MINOR_VERSION)
 	$(CP) ./files/$(2).init $(1)/etc/init.d/
 	
-	$(INSTALL_DATA) ./files/$(2).yaml $(1)/etc/$(2)-$(PKG_VERSION)/
+	$(INSTALL_DATA) ./files/$(2).yaml $(1)/etc/$(2)-$(MAJOR_MINOR_VERSION)/
 endef
 
 define Package/omf/install
-	$(INSTALL_DIR) $(1)/usr/share/omf-common-$(PKG_VERSION)
+	$(INSTALL_DIR) $(1)/usr/share/omf-common-$(MAJOR_MINOR_VERSION)
 	
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/omf-common/ruby/* \
-		$(1)/usr/share/omf-common-$(PKG_VERSION)/
+		$(1)/usr/share/omf-common-$(MAJOR_MINOR_VERSION)/
 		
 	$(INSTALL_DIR) $(1)/usr/lib/ruby/$(RUBY_LIB_VER)/wss4r/security/util
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/wss4r/xmlcanonicalizer.rb \
@@ -98,5 +99,5 @@ define Package/omf-resctl/install
 $(call Package/helper/install,$(1),omf-resctl)
 endef
 
-$(eval $(call BuildPackage,omf))
+$(eval $(call BuildPackage,omf))	
 $(eval $(call BuildPackage,omf-resctl))
