@@ -45,59 +45,6 @@
            else
              raise "Unknown mode '#{value}'. Should be 'master', 'managed', "+
                    "'adhoc', or monitor."
---- a/omf-resctl/ruby/omf-resctl/omf_driver/atheros.rb
-+++ b/omf-resctl/ruby/omf-resctl/omf_driver/atheros.rb
-@@ -84,9 +84,9 @@ class AtherosDevice < WirelessDevice
-       when 'type'
-         # 'value' defines type of operation
-         type = case
--          when value == 'a' : 1
--          when value == 'b' : 2
--          when value == 'g' : 3
-+          when value == 'a' then 1
-+          when value == 'b' then 2
-+          when value == 'g' then 3
-           else
-             raise "Unknown type. Should be 'a', 'b', or 'g'."
-         end
-@@ -94,16 +94,16 @@ class AtherosDevice < WirelessDevice
- 
-       when "mode"
-         mode = case
--          when value == 'master' : 'ap'
--          when value == 'Master' : 'ap'
--          when value == 'managed' : 'sta'
--          when value == 'Managed' : 'sta'
--          when value == 'ad-hoc' : 'adhoc'
--          when value == 'Ad-Hoc' : 'adhoc'
--          when value == 'adhoc' : 'adhoc'
--          when value == 'AdHoc' : 'adhoc'
--          when value == 'monitor' : 'monitor'
--          when value == 'Monitor' : 'monitor'
-+          when value == 'master' then 'ap'
-+          when value == 'Master' then 'ap'
-+          when value == 'managed' then 'sta'
-+          when value == 'Managed' then 'sta'
-+          when value == 'ad-hoc' then 'adhoc'
-+          when value == 'Ad-Hoc' then 'adhoc'
-+          when value == 'adhoc' then 'adhoc'
-+          when value == 'AdHoc' then 'adhoc'
-+          when value == 'monitor' then 'monitor'
-+          when value == 'Monitor' then 'monitor'
-           else
-             raise "Unknown mode '#{value}'. Should be 'master', 'managed', or 'adhoc'."
-         end
-@@ -118,8 +118,8 @@ class AtherosDevice < WirelessDevice
- 	# this config file on your on ORBIT deployment, the following lines 
- 	# must be changed accordingly)
-         baseDevice = case
--          when @deviceName == 'ath0' : 'wifi0'
--          when @deviceName == 'ath1' : 'wifi1'
-+          when @deviceName == 'ath0' then 'wifi0'
-+          when @deviceName == 'ath1' then 'wifi1'
-           else
-             raise "Unknown device name '#{@deviceName}'."
-         end
 --- a/omf-resctl/ruby/omf-resctl/omf_driver/intel.rb
 +++ b/omf-resctl/ruby/omf-resctl/omf_driver/intel.rb
 @@ -56,9 +56,9 @@ class IntelDevice < WirelessDevice
@@ -176,3 +123,16 @@
      }
      @@events.clear
    end
+--- a/omf-resctl/ruby/omf-resctl/omf_driver/ath5k.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_driver/ath5k.rb
+@@ -90,8 +90,8 @@ class Ath5kDevice < WirelessDevice
+ 	# this config file on your on ORBIT deployment, the following lines 
+ 	# must be changed accordingly)
+         baseDevice = case
+-          when @deviceName == 'wlan0' : 'phy0'
+-          when @deviceName == 'wlan1' : 'phy1'
++          when @deviceName == 'wlan0' then 'phy0'
++          when @deviceName == 'wlan1' then 'phy1'
+           else
+             raise "Unknown device name '#{@deviceName}'."
+         end
