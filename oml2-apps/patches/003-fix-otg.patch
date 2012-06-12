@@ -1,0 +1,12 @@
+--- a/otg/lib/port/udp_inport.cpp
++++ b/otg/lib/port/udp_inport.cpp
+@@ -8,7 +8,8 @@
+ #include <ocomm/o_log.h>
+ 
+ //#include "otg2/dummysink.h"
+-#define DEF_PKT_LENGTH 1024
++// 1500 is MTU (in most cases) - 8 UDP - 20 IP
++#define DEF_PKT_LENGTH 1472
+ 
+ #ifdef WITH_OML
+ extern "C" {
