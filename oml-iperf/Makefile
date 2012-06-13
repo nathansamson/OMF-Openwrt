@@ -34,7 +34,7 @@ define Package/oml-iperf/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/iperf \
-		$(1)/usr/bin/oml-iperf
+		$(1)/usr/bin/oml2-iperf
 endef
 
 $(eval $(call BuildPackage,oml-iperf))
