@@ -33,7 +33,7 @@ but can also be run independent of OMF.
 
 endef
 
-define Package/oml2-bench/build
+define Package/oml2-bench/Compile
 	gcc -o $(PKG_BUILD_DIR) $(PKG_SOURCE_DIR)/oml2-bench.c -loml2
 endef
 
