@@ -9,7 +9,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=master
 PKG_SOURCE_URL:=https://github.com/nathansamson/OML2-Bench.git
-PKG_SOURCE_SUBDIR:=oml2-bench
+PKG_SOURCE_SUBDIR:=oml2-bench-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 
 include $(INCLUDE_DIR)/package.mk
@@ -33,8 +33,9 @@ but can also be run independent of OMF.
 
 endef
 
-define Package/oml2-bench/Compile
-	gcc -o $(PKG_BUILD_DIR) $(PKG_SOURCE_DIR)/oml2-bench.c -loml2
+define Build/Compile
+	
+	gcc -I$(STAGING_DIR)/usr/include -o $(PKG_BUILD_DIR)/oml2-bench $(PKG_BUILD_DIR)/oml2-bench.c -loml2
 endef
 
 define Package/oml2-bench/install
