@@ -35,7 +35,7 @@ endef
 
 define Build/Compile
 	
-	gcc -I$(STAGING_DIR)/usr/include -o $(PKG_BUILD_DIR)/oml2-bench $(PKG_BUILD_DIR)/oml2-bench.c -loml2
+	gcc -I$(STAGING_DIR)/usr/include -o $(PKG_BUILD_DIR)/usr/bin/oml2-bench $(PKG_BUILD_DIR)/oml2-bench.c -loml2
 endef
 
 define Package/oml2-bench/install
