@@ -33,9 +33,14 @@ but can also be run independent of OMF.
 
 endef
 
-define Build/Compile
-	
-	gcc -I$(STAGING_DIR)/usr/include -o $(PKG_BUILD_DIR)/oml2-bench $(PKG_BUILD_DIR)/oml2-bench.c -loml2
+define Build/Compile	
+	CPPFLAGS=$(TARGET_CPPFLAGS) CFLAGS=$(TARGET_CFLAGS) \
+		LD_FLAGS=$(TARGET_LDFLAGS) \
+		$(TOOLCHAIN_DIR)/bin/$(TARGET_CROSS)gcc \
+		-I$(STAGING_DIR)/usr/include \
+		-o $(PKG_BUILD_DIR)/oml2-bench \
+		$(PKG_BUILD_DIR)/oml2-bench.c \
+		-loml2
 endef
 
 define Package/oml2-bench/install
