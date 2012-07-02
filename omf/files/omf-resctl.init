@@ -22,6 +22,14 @@ start(){
                 exit 1;
         fi
 
+        hnm=$(hostname)
+        while [ "x$hnm" == "xOpenWrt" ] || [ "x$hnm" == "x" ]; do
+                echo "DHCP does not seem to be finished yet. " \
+                      "Waiting for correct hosname to appear..."
+                sleep 1
+                hnm=$(hostname)
+        done
+
         start-stop-daemon -b -S -x /usr/bin/omf-resctl
 }
 
