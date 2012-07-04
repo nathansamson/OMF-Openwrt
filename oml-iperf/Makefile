@@ -23,8 +23,12 @@ define Package/oml-iperf
   DEFAULT:=n
   TITLE:=OML2 IPerf
   URL:=http://mytestbed.net
-  DEPENDS:=+liboml2
+  DEPENDS:=+liboml2 +USE_UCLIBC:uclibcxx +!USE_UCLIBC:libstdcpp
 endef
+
+ifdef CONFIG_USE_UCLIBC
+  TARGET_CXX=g++-uc
+endif
 
 define Package/oml-iperf/description
 This project is meant to implement OML support for Iperf 2.0.5.
