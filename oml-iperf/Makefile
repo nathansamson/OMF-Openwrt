@@ -2,14 +2,13 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=oml-iperf
 PKG_VERSION:=2.0.5
-PKG_RELEASE:=0
-PKG_SOURCE_ID:=648
-
+PKG_RELEASE:=1
+PKG_SOURCE_ID:=725
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/oml2-iperf-$(PKG_VERSION)+oml1
-PKG_SOURCE:=oml2-iperf-$(PKG_VERSION)_oml1.tar.gz
+PKG_SOURCE:="iperf-$(PKG_VERSION) oml2.8.0.tar.gz"
 PKG_SOURCE_URL:=http://oml2.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
-PKG_MD5SUM=7c08462eeb0b0d4d4f8cdbb9bbaded24
+PKG_MD5SUM=4166bcc03c1dfd557869bd4899ea1d16
 PKG_CAT:=zcat
 PKG_FIXUP:=autoreconf
 

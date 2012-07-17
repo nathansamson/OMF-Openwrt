@@ -1,15 +1,15 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=oml2-apps
-PKG_VERSION:=2.5.0
-PKG_RELEASE:=1
-PKG_SOURCE_ID:=645
+PKG_VERSION:=2.8.0
+PKG_RELEASE:=0
+PKG_SOURCE_ID:=724
 
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://oml.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
-PKG_MD5SUM=6331de8a187a0c8e6ae0cf46ec84b876
+PKG_SOURCE_URL:=http://oml2.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
+PKG_MD5SUM=513aea666234f520952449288904cce2
 PKG_CAT:=zcat
 PKG_FIXUP:=autoreconf
 PKG_INSTALL:=1
