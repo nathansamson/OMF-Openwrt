@@ -6,7 +6,7 @@ PKG_RELEASE:=1
 PKG_SOURCE_ID:=725
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/oml2-iperf-$(PKG_VERSION)+oml1
-PKG_SOURCE:="iperf-$(PKG_VERSION) oml2.8.0.tar.gz"
+PKG_SOURCE:=iperf-$(PKG_VERSION) oml2.8.0.tar.gz
 PKG_SOURCE_URL:=http://oml2.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
 PKG_MD5SUM=4166bcc03c1dfd557869bd4899ea1d16
 PKG_CAT:=zcat
