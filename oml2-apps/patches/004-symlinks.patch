@@ -1,0 +1,69 @@
+Index: oml2-apps-2.8.0/gpslogger/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/gpslogger/Makefile.am	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/gpslogger/Makefile.am	2012-07-18 11:16:18.000000000 +0200
+@@ -23,7 +23,7 @@
+ 
+ install-exec-hook:
+ 	for OLDNAME in $(installed_link_names); do \
+-		$(LN_S) $(installed_name) $${OLDNAME}; \
++		$(LN_S) -f $(installed_name) $${OLDNAME}; \
+ 	done
+ 
+ uninstall-hook:
+Index: oml2-apps-2.8.0/nmetrics/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/nmetrics/Makefile.am	2012-07-17 08:44:56.000000000 +0200
++++ oml2-apps-2.8.0/nmetrics/Makefile.am	2012-07-18 11:16:33.000000000 +0200
+@@ -39,7 +39,7 @@
+ 
+ install-exec-hook:
+ 	for OLDNAME in $(installed_link_names); do \
+-		$(LN_S) $(installed_name) $${OLDNAME}; \
++		$(LN_S) -f $(installed_name) $${OLDNAME}; \
+ 	done
+ 
+ uninstall-hook:
+Index: oml2-apps-2.8.0/otg2/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/otg2/Makefile.am	2012-07-17 08:44:56.000000000 +0200
++++ oml2-apps-2.8.0/otg2/Makefile.am	2012-07-18 11:16:54.000000000 +0200
+@@ -72,10 +72,10 @@
+ 
+ install-exec-hook:
+ 	for OLDNAME in $(installed_links_otg2); do  \
+-		$(LN_S) $(target_otg2) $${OLDNAME}; \
++		$(LN_S) -f $(target_otg2) $${OLDNAME}; \
+ 	done
+ 	for OLDNAME in $(installed_links_otr2); do  \
+-		$(LN_S) $(target_otr2) $${OLDNAME}; \
++		$(LN_S) -f $(target_otr2) $${OLDNAME}; \
+ 	done
+ 
+ uninstall-hook:
+Index: oml2-apps-2.8.0/ripwavemon/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/ripwavemon/Makefile.am	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/ripwavemon/Makefile.am	2012-07-18 11:17:13.000000000 +0200
+@@ -36,7 +36,7 @@
+ 
+ install-exec-hook:
+ 	for OLDNAME in $(installed_link_names); do \
+-		$(LN_S) $(installed_name) $${OLDNAME}; \
++		$(LN_S) -f $(installed_name) $${OLDNAME}; \
+ 	done
+ 
+ uninstall-hook:
+Index: oml2-apps-2.8.0/wlanconfig/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/wlanconfig/Makefile.am	2012-07-17 10:30:46.000000000 +0200
++++ oml2-apps-2.8.0/wlanconfig/Makefile.am	2012-07-18 11:17:23.000000000 +0200
+@@ -23,7 +23,7 @@
+ 
+ install-exec-hook:
+ 	for OLDNAME in $(installed_link_names); do \
+-		$(LN_S) $(installed_name) $${OLDNAME}; \
++		$(LN_S) -f $(installed_name) $${OLDNAME}; \
+ 	done
+ 
+ uninstall-hook:
