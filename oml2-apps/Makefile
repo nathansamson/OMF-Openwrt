@@ -68,7 +68,7 @@ define Package/oml2-apps/install
 		$(1)/usr/bin/
 	
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/bin/ripwavemon \
+		$(PKG_INSTALL_DIR)/usr/bin/ripwavemon-oml2 \
 		$(1)/usr/bin/
 endef
 
