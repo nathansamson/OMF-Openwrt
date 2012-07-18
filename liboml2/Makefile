@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=liboml2
-PKG_VERSION:=2.8.0
+PKG_VERSION:=2.8.1
 PKG_RELEASE:=0
 PKG_SOURCE_ID:=709
 
@@ -9,7 +9,7 @@ PKG_SOURCE_ID:=709
 PKG_BUILD_DIR:=$(BUILD_DIR)/oml2-$(PKG_VERSION)
 PKG_SOURCE:=oml2-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://omf.mytestbed.net/attachments/download/${PKG_SOURCE_ID}/
-PKG_MD5SUM=be680be07a7157f148b2f38176d90b35
+PKG_MD5SUM=2abdc8561e7142a93894c84713418aa0
 PKG_CAT:=zcat
 PKG_FIXUP:=autoreconf
 
