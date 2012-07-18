@@ -7,8 +7,8 @@ OML_VERSION=2.8.0
 PKG_SOURCE_ID:=725
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/iperf-$(PKG_VERSION)+oml$(OML_VERSION)
-PKG_SOURCE:=iperf-$(PKG_VERSION) oml$(OML_VERSION).tar.gz
-PKG_SOURCE_URL:=http://oml2.mytestbed.net/attachments/download/$(PKG_SOURCE_ID)/
+PKG_SOURCE:=iperf-$(PKG_VERSION)-oml$(OML_VERSION).tar.gz
+PKG_SOURCE_URL:=http://143.129.80.193/mirror/
 PKG_MD5SUM=4166bcc03c1dfd557869bd4899ea1d16
 PKG_CAT:=zcat
 PKG_FIXUP:=autoreconf
