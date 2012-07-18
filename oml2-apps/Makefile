@@ -40,7 +40,7 @@ It consists of the following applications.
     oml2-otr2 (as otr2)
     oml2-gpslogger -- The GPS app;
     oml2-wlanconfig -- Records wifi info from wlanconfig;
-    ripwave-monitor
+    ripwavemon
 
 endef
 
@@ -68,8 +68,8 @@ define Package/oml2-apps/install
 		$(1)/usr/bin/
 	
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/bin/ripwave-monitor \
-		$(1)/usr//
+		$(PKG_INSTALL_DIR)/usr/bin/ripwavemon \
+		$(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,oml2-apps))
