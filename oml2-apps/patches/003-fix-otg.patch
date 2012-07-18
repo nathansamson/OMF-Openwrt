@@ -1,5 +1,5 @@
---- a/otg/lib/port/udp_inport.cpp
-+++ b/otg/lib/port/udp_inport.cpp
+--- a/otg2/lib/port/udp_inport.cpp
++++ b/otg2/lib/port/udp_inport.cpp
 @@ -8,7 +8,8 @@
  #include <ocomm/o_log.h>
  

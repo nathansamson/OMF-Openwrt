@@ -1,18 +1,23 @@
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -1,3 +1,3 @@
- ACLOCAL_AMFLAGS = -I m4 -Wnone
+Index: oml2-apps-2.8.0/Makefile.am
+===================================================================
+--- oml2-apps-2.8.0.orig/Makefile.am	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/Makefile.am	2012-07-18 09:14:40.000000000 +0200
+@@ -1,3 +1,4 @@
+ ACLOCAL_AMFLAGS = -Wall
  
--SUBDIRS = gpslogger omf_nmetrics omf_trace otg wlanconfig simple ripwave_monitor
-+SUBDIRS = gpslogger omf_nmetrics otg wlanconfig simple ripwave_monitor
---- a/configure.ac
-+++ b/configure.ac
-@@ -16,7 +16,7 @@ AC_CONFIG_FILES([Makefile
- 		simple/Makefile
- 		])
+-SUBDIRS = gpslogger nmetrics iperf otg2 ripwavemon trace wlanconfig 
++SUBDIRS = gpslogger nmetrics otg2 wlanconfig ripwavemon
++
+Index: oml2-apps-2.8.0/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/configure.ac	2012-07-18 09:13:02.000000000 +0200
+@@ -10,7 +10,7 @@
+ AC_PROG_INSTALL
+ AC_PROG_MAKE_SET
  
--AC_CONFIG_SUBDIRS([gpslogger omf_nmetrics omf_trace otg ripwave_monitor wlanconfig])
-+AC_CONFIG_SUBDIRS([gpslogger omf_nmetrics otg ripwave_monitor wlanconfig])
+-AC_CONFIG_SUBDIRS([gpslogger iperf nmetrics otg2 ripwavemon trace wlanconfig])
++AC_CONFIG_SUBDIRS([gpslogger nmetrics otg2 ripwavemon wlanconfig])
  
  # Generate output files
- AC_OUTPUT
+ AC_CONFIG_FILES([Makefile])
