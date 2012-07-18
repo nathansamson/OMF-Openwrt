@@ -1,0 +1,83 @@
+Index: oml2-apps-2.8.0/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/configure.ac	2012-07-18 10:31:09.000000000 +0200
++++ oml2-apps-2.8.0/configure.ac	2012-07-18 10:31:55.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([oml2-apps], [2.8.0], [oml-user@list.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/gpslogger/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/gpslogger/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/gpslogger/configure.ac	2012-07-18 10:32:10.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([gpslogger-oml2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/iperf/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/iperf/configure.ac	2012-07-17 10:25:58.000000000 +0200
++++ oml2-apps-2.8.0/iperf/configure.ac	2012-07-18 10:32:27.000000000 +0200
+@@ -4,7 +4,7 @@
+ dnl ===================================================================
+ 
+ 
+-AC_PREREQ(2.69)
++AC_PREREQ(2.68)
+ AC_INIT([iperf],[2.0.5+oml2.8.0],[oml-user@lists.nicta.com.au])
+ AC_CONFIG_HEADER([config.h])
+ AM_INIT_AUTOMAKE()
+Index: oml2-apps-2.8.0/nmetrics/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/nmetrics/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/nmetrics/configure.ac	2012-07-18 10:32:42.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([nmetrics-oml2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/otg2/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/otg2/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/otg2/configure.ac	2012-07-18 10:32:56.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([otg2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/ripwavemon/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/ripwavemon/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/ripwavemon/configure.ac	2012-07-18 10:33:11.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([ripwavemon-oml2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/trace/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/trace/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/trace/configure.ac	2012-07-18 10:33:24.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([trace-oml2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+Index: oml2-apps-2.8.0/wlanconfig/configure.ac
+===================================================================
+--- oml2-apps-2.8.0.orig/wlanconfig/configure.ac	2012-07-17 10:31:21.000000000 +0200
++++ oml2-apps-2.8.0/wlanconfig/configure.ac	2012-07-18 10:33:36.000000000 +0200
+@@ -1,4 +1,4 @@
+-AC_PREREQ([2.69])
++AC_PREREQ([2.68])
+ AC_INIT([wlanconfig-oml2], [2.8.0], [oml-user@lists.nicta.com.au])
+ AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
