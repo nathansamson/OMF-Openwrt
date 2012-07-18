@@ -36,7 +36,7 @@ endef
 define Build/Compile	
 	CPPFLAGS="$(TARGET_CPPFLAGS)" CFLAGS="$(TARGET_CFLAGS)" \
 		LD_FLAGS="$(TARGET_LDFLAGS)" \
-		$(TOOLCHAIN_DIR)/bin/$(TARGET_CROSS)gcc \\
+		$(TOOLCHAIN_DIR)/bin/$(TARGET_CROSS)gcc \
 		-o $(PKG_BUILD_DIR)/oml2-bench \
 		$(PKG_BUILD_DIR)/oml2-bench.c \
 		-loml2
