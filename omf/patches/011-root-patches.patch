@@ -1,0 +1,639 @@
+commit e3396b41452a9daae14e4a7267882edec3950ced
+Author: Christoph Dwertmann <christoph.dwertmann@nicta.com.au>
+Date:   Mon Jun 25 19:32:15 2012 +1000
+
+    * changed PubSub namespace to include OMF version number. IMPORTANT: you need to recreate your pubsub nodes after this patch!!
+    * EC's reset function will no longer send a RESET message to the RC, which is not necessary as it gets rebooted anyway
+    * When the RC gets a second ENROL for the same experiment ID, it will not report this as an error
+
+diff --git a/build_debs.sh b/build_debs.sh
+new file mode 100755
+index 0000000..314b517
+--- /dev/null
++++ b/build_debs.sh
+@@ -0,0 +1,14 @@
++#!/bin/bash
++
++packages="omf-aggmgr omf-common omf-expctl omf-oml omf-resctl omf-web"
++
++rm *.deb *.changes *.upload *.build
++
++for deb in $packages
++do
++  echo "Building $deb"
++  cd $deb
++  debuild -uc -us -b
++  cd ..
++done
++
+diff --git a/omf-aggmgr/debian/changelog b/omf-aggmgr/debian/changelog
+index a745e09..fc1402c 100644
+--- a/omf-aggmgr/debian/changelog
++++ b/omf-aggmgr/debian/changelog
+@@ -1,3 +1,9 @@
++omf-aggmgr-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * renamed root element in pubsub node
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Thu, 21 Jun 2012 18:49:32 +1000
++
+ omf-aggmgr-5.4 (5.4-ubuntu4) oneiric; urgency=low
+ 
+   * 5.4.1 release 
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
+index 834dde0..3cfe04f 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
+@@ -61,6 +61,7 @@ include WEBrick
+ OMF_VERSION = OMF::Common::VERSION(__FILE__)
+ OMF_MM_VERSION = OMF::Common::MM_VERSION()
+ OMF_VERSION_STRING = "OMF Aggregate Manager #{OMF_VERSION}"
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ DEF_SEARCH_PATH = [".", "../etc/omf-aggmgr-#{OMF_MM_VERSION}", "/etc/omf-aggmgr-#{OMF_MM_VERSION}"]
+ DEF_CONFIG_FILE = 'omf-aggmgr.yaml'
+@@ -198,7 +199,7 @@ def run(params)
+       OMF::Services::XmppEndpoint.sender_id = xmpp_params[:user]
+       OMF::Services::XmppEndpoint.connection=xmpp_connection
+       OMF::Services::XmppEndpoint.pubsub_selector { |opts|
+-        "/OMF/system"
++        "/#{ROOT}/system"
+       }
+ 
+       begin
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
+index 4059671..93f6c88 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
+@@ -29,6 +29,7 @@ require 'omf-common/mobject'
+ require 'omf-common/communicator/omfProtocol'
+ require 'omf-common/communicator/xmpp/xmpp'
+ require 'omf-common/servicecall'
++require 'omf-common/omfVersion'
+ 
+ class AggmgrServer < MObject
+ 
+@@ -254,7 +255,7 @@ class XmppAggmgrServer < AggmgrServer
+ 
+   include OmfProtocol
+   include OMF::ServiceCall::XMPP
+-  SLICE_PREFIX = "/OMF"
++  SLICE_PREFIX = "/OMF_#{OMF::Common::MM_VERSION()}"
+   SLICE_SUFFIX = "resources"
+ 
+   attr_reader :domains, :connection
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
+index 5d48d27..7501637 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
+@@ -26,9 +26,9 @@
+ # This file defines the SliceManager class.  This class implements a
+ # service to create and delete slices.  When a slice is created,
+ # several pubsub nodes are created on the XMPP server, under
+-# "/OMF/<slice_name>".  Resources can then be associated to a slice,
++# "/OMF_x.x/<slice_name>".  Resources can then be associated to a slice,
+ # which creates individual pubsub nodes for each resource under
+-# "/OMF/<slice_name>/resources/<hrn>".  Here, <hrn> is the Human
++# "/OMF_x.x/<slice_name>/resources/<hrn>".  Here, <hrn> is the Human
+ # Readable Name of the resource, and <slice_name> is the name of the
+ # slice.
+ #
+@@ -40,6 +40,8 @@ require 'dm-migrations'
+ require 'omf-common/servicecall'
+ require 'omf-aggmgr/ogs/serviceMounter'
+ require 'omf-aggmgr/ogs/gridService'
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ DataMapper::Logger.new($stdout, :debug)
+ DataMapper.setup(:default, 'mysql://localhost/dmtest')
+@@ -73,7 +75,7 @@ class SliceManagerService < GridService
+   s_param :sliceName, 'sliceName', 'name of the new slice'
+   s_param :pubsub_domain, 'pubsubDomain', 'the XMPP pubsub domain to create it on'
+   service 'createSlice' do |sliceName, pubsub_domain|
+-    # Create /OMF/<sliceName> and /OMF/<sliceName>/resources on <pubsub_domain>
++    # Create /OMF_x.x/<sliceName> and /OMF_x.x/<sliceName>/resources on <pubsub_domain>
+     if pubsub_domain.nil?
+       MObject.error("SliceManager", "createSlice:  pubsub_domain is empty")
+       raise "SliceManager.createSlice: pubsub_domain is missing"
+@@ -113,7 +115,7 @@ class SliceManagerService < GridService
+   s_param :resources, 'resources', 'comma-separated list of resources to associate with the slice'
+   s_param :pubsub_domain, 'pubsub_domain', 'the XMPP pubsub domain that hosts "sliceName"'
+   service 'associateResourcesToSlice' do |sliceName, resources, pubsub_domain|
+-    # For each resource, create /OMF/<sliceName>/resources/<hrn>,
++    # For each resource, create /OMF_x.x/<sliceName>/resources/<hrn>,
+     # where <hrn> is the human readable name of the resource.
+     MObject.debug "associateResourcesToSlice"
+     if pubsub_domain.nil?
+@@ -148,7 +150,7 @@ class SliceManagerService < GridService
+   s_param :resources, 'resources', 'list of resources to deassociate from the slice'
+   s_param :pubsub_domain, 'pubsub_domain', 'the XMPP pubsub domain that hosts "sliceName"'
+   service 'deassociateResourcesFromSlice' do |sliceName, resources, pubsub_domain|
+-    # For each resource, delete /OMF/<sliceName>/resources/<hrn>,
++    # For each resource, delete /OMF_x.x/<sliceName>/resources/<hrn>,
+     # where <hrn> is the human readable name of the resource.
+     MObject.debug "sliceManager", "deassociateResourcesFromSlice #{sliceName}"
+     resource_list = resources.split(',')
+@@ -340,7 +342,7 @@ class SliceManagerService < GridService
+   end
+ 
+   def self.slice_node(slice)
+-    "/OMF/#{slice}"
++    "/#{ROOT}/#{slice}"
+   end
+ 
+   def self.resources_node(slice)
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb b/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
+index d1f2136..054bf52 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
+@@ -23,6 +23,8 @@
+ # THE SOFTWARE.
+ 
+ require "omf-common/communicator/xmpp/omfXMPPServices"
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ #Jabber::debug = true
+ 
+@@ -48,8 +50,8 @@ class Node
+   end
+ end
+ 
+-OMF = Node.new("/OMF")
+-SYSTEM = OMF + "system"
++ROOTNODE = Node.new("/#{ROOT}")
++SYSTEM = ROOTNODE + "system"
+ 
+ # ------- SUPPORTING FUNCTIONS -------
+ 
+@@ -134,9 +136,9 @@ do |args|
+   rmnode(args[0])
+ end
+ 
+-# Remove all nodes under the given one.  i.e. rmunder("/OMF/system")
+-# will delete "/OMF/system/omf.nicta.node1",
+-# "/OMF/system/omf.nicta.node2", ... But NOT "/OMF/system" iteself.
++# Remove all nodes under the given one.  i.e. rmunder("/#{ROOT}/system")
++# will delete "/#{ROOT}/system/omf.nicta.node1",
++# "/#{ROOT}/system/omf.nicta.node2", ... But NOT "/#{ROOT}/system" iteself.
+ command("rmunder <prefix> -- delete all nodes whose names start with <prefix> (only if owner!)")\
+ do |args|
+   prefix = args[0]
+@@ -144,9 +146,9 @@ do |args|
+   nodes.each { |n| puts "Deleting node '#{n}':  #{if rmnode(n) then "success" else "failure" end}" }
+ end
+ 
+-command("mksys -- create the system nodes /OMF and /OMF/system")\
++command("mksys -- create the system nodes /#{ROOT} and /#{ROOT}/system")\
+ do |args|
+-  [OMF, SYSTEM].each do |n|
++  [ROOTNODE, SYSTEM].each do |n|
+     begin
+       mknode(n)
+     rescue Exception => e
+@@ -159,19 +161,19 @@ command("mkslice <name> [resource*] -- create a slice node and nodes for the nam
+ do |args|
+   slice = args[0]
+   resources = args[1..-1]
+-  mknode(OMF + slice)
+-  mknode(OMF + slice + "resources")
+-  resources.each { |r| mknode(OMF + slice + "resources" + r) }
++  mknode(ROOTNODE + slice)
++  mknode(ROOTNODE + slice + "resources")
++  resources.each { |r| mknode(ROOTNODE + slice + "resources" + r) }
+ end
+ 
+ command("sliceadd <slice> [<resource>*] -- add a (list of) resource(s) to a <slice>")\
+ do |args|
+   slice = args[0]
+   resources = args[1..-1]
+-  resources.each { |r| mknode(OMF + slice + "resources" + r) }
++  resources.each { |r| mknode(ROOTNODE + slice + "resources" + r) }
+ end
+ 
+-command("resourceadd [<resource>*] -- add a (list of) resource(s) to the system nodes (under /OMF/system)")\
++command("resourceadd [<resource>*] -- add a (list of) resource(s) to the system nodes (under /#{ROOT}/system)")\
+ do |args|
+   args.each { |r| mknode(SYSTEM + r) }
+ end
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb b/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
+index b470a55..e9497cc 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env ruby
+ 
+ require 'omf-common/servicecall'
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ #Jabber::debug = true
+ 
+@@ -23,11 +25,11 @@ def run
+     end
+ 
+     if slice.nil?
+-      "/OMF/system"
++      "/#{ROOT}/system"
+     elsif hrn.nil?
+-      "/OMF/#{slice}"
++      "/#{ROOT}/#{slice}"
+     else
+-      "/OMF/#{slice}/#{hrn}"
++      "/#{ROOT}/#{slice}/#{hrn}"
+     end
+   }
+ 
+diff --git a/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb b/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
+index 94aff8d..92efcff 100644
+--- a/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
++++ b/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env ruby
+ 
+ require 'omf-common/servicecall'
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ #Jabber::debug = true
+ 
+@@ -18,11 +20,11 @@ def run
+     end
+ 
+     if slice.nil?
+-      "/OMF/system"
++      "/#{ROOT}/system"
+     elsif hrn.nil?
+-      "/OMF/#{slice}"
++      "/#{ROOT}/#{slice}"
+     else
+-      "/OMF/#{slice}/#{hrn}"
++      "/#{ROOT}/#{slice}/#{hrn}"
+     end
+   }
+ 
+diff --git a/omf-common/debian/changelog b/omf-common/debian/changelog
+index 15129b7..b6158f4 100644
+--- a/omf-common/debian/changelog
++++ b/omf-common/debian/changelog
+@@ -1,3 +1,9 @@
++omf-common-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * renamed root element in pubsub node
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Thu, 21 Jun 2012 18:51:35 +1000
++
+ omf-common-5.4 (5.4-ubuntu5) oneiric; urgency=low
+ 
+   * Fixed bug #478
+diff --git a/omf-common/debian/rules b/omf-common/debian/rules
+index 4f0e8e9..136b7e4 100755
+--- a/omf-common/debian/rules
++++ b/omf-common/debian/rules
+@@ -52,7 +52,6 @@ install: build
+ 	# Add here commands to install the package into debian/tmp	
+ 	mkdir -p debian/$(PKG_NAME)/usr/share/$(PKG_NAME)
+ 	tar -C ruby -cf - --exclude='.svn' `find ruby/* -print | sed 's/^ruby\///'` | tar -xf - -C debian/$(PKG_NAME)/usr/share/$(PKG_NAME)
+-	tar -cf - --exclude='.svn' share | tar -xf - -C debian/$(PKG_NAME)/usr/share/$(PKG_NAME)
+ 	(cd debian/$(PKG_NAME)/usr/share/$(PKG_NAME); $(PWD)/../gem-package.sh)
+ 
+ # Build architecture-independent files here.
+diff --git a/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb b/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
+index 35e4349..36f7d36 100644
+--- a/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
++++ b/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
+@@ -30,11 +30,12 @@
+ #
+ #
+ require 'omf-common/communicator/omfAddress'
++require 'omf-common/omfVersion'
+ 
+ class OmfPubSubAddress < OmfAddress
+ 
+   # Names for constant PubSub nodes
+-  PUBSUB_ROOT = "OMF"
++  PUBSUB_ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+   RESOURCE = "resources"
+   SYSTEM = "system"
+ 
+diff --git a/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb b/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
+index f686b24..f6fb095 100644
+--- a/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
++++ b/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
+@@ -2,6 +2,8 @@ require 'rubygems'
+ require 'xmpp4r'
+ require 'omf-common/mobject'
+ require 'omf-common/communicator/xmpp/omfXMPPServices'
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ #Jabber::debug = true
+ module OMF
+@@ -525,8 +527,8 @@ def run(pubsub_domain)
+   subs = domain.request_subscriptions
+ #  subs.each { |s| domain.unsubscribe(s) }
+ 
+-  listener = domain.listen_to_node("/OMF")
+-  listener2 = domain.listen_to_node("/OMF/system")
++  listener = domain.listen_to_node("/#{ROOT}")
++  listener2 = domain.listen_to_node("/#{ROOT}/system")
+   i = 1
+   m = 0
+ 
+@@ -547,9 +549,9 @@ def run(pubsub_domain)
+     item2.add(goodbye)
+ 
+     puts "Pub1"
+-    domain.publish_to_node("/OMF", item)
++    domain.publish_to_node("/#{ROOT}", item)
+     puts "Pub2"
+-    domain.publish_to_node("/OMF/system", item2)
++    domain.publish_to_node("/#{ROOT}/system", item2)
+ 
+     puts "Servicing queue 1"
+     until listener.queue.empty?
+@@ -576,7 +578,7 @@ def listener(domain)
+   domain = OMF::XMPP::PubSub::Domain.new(connection, domain)
+   subs = domain.request_subscriptions
+ 
+-  listener = domain.listen_to_node("/OMF/system")
++  listener = domain.listen_to_node("/#{ROOT}/system")
+ 
+   while msg = listener.queue.pop
+     puts "RECEIVED:  #{msg.to_s}"
+diff --git a/omf-common/ruby/omf-common/servicecall/xmpp.rb b/omf-common/ruby/omf-common/servicecall/xmpp.rb
+index 6dce5d1..18e2588 100644
+--- a/omf-common/ruby/omf-common/servicecall/xmpp.rb
++++ b/omf-common/ruby/omf-common/servicecall/xmpp.rb
+@@ -31,6 +31,8 @@ require 'omf-common/servicecall/endpoint'
+ 
+ require 'omf-common/communicator/xmpp/xmpp'
+ require 'omf-common/communicator/xmpp/omfPubSubTransport'
++require 'omf-common/omfVersion'
++ROOTNODE = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ module OMF
+   module Services
+@@ -118,7 +120,7 @@ module OMF
+         opts = args.find { |a| a.kind_of? Hash }
+ #puts ">>>>> TDB - XMPP - send_request - 1 - @@selector: '#{@@selector}'"
+ #puts ">>>>> TDB - XMPP - send_request - 1 - opts: '#{opts}'"
+-        pubsub_node = !@@selector.nil? ? @@selector.call(opts) : "/OMF/system"
++        pubsub_node = !@@selector.nil? ? @@selector.call(opts) : "/#{ROOTNODE}/system"
+ #puts ">>>>> TDB - XMPP - send_request - psnode: '#{pubsub_node}'"
+ 
+         if args.length == 1 and args[0].kind_of? Hash
+diff --git a/omf-expctl/debian/changelog b/omf-expctl/debian/changelog
+index 6647557..af5f89e 100644
+--- a/omf-expctl/debian/changelog
++++ b/omf-expctl/debian/changelog
+@@ -1,3 +1,9 @@
++omf-expctl-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * renamed root element in pubsub node
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Thu, 21 Jun 2012 18:50:50 +1000
++
+ omf-expctl-5.4 (5.4-ubuntu6) oneiric; urgency=low
+ 
+   * follow up on #478
+diff --git a/omf-expctl/ruby/omf-expctl/node/node.rb b/omf-expctl/ruby/omf-expctl/node/node.rb
+index 2c59719..a445e38 100644
+--- a/omf-expctl/ruby/omf-expctl/node/node.rb
++++ b/omf-expctl/ruby/omf-expctl/node/node.rb
+@@ -519,7 +519,6 @@ class OMF::EC::Node < MObject
+        ((Time.now.tv_sec - @poweredAt.tv_sec) < REBOOT_TIME)
+       return
+     else
+-      ECCommunicator.instance.send_reset(@nodeID)
+       changed
+       notify_observers(self, :before_resetting_node)
+       setStatus(STATUS_RESET)
+diff --git a/omf-expctl/ruby/omf-expctl/nodeHandler.rb b/omf-expctl/ruby/omf-expctl/nodeHandler.rb
+index f59acd1..fb168c0 100644
+--- a/omf-expctl/ruby/omf-expctl/nodeHandler.rb
++++ b/omf-expctl/ruby/omf-expctl/nodeHandler.rb
+@@ -733,11 +733,11 @@ class NodeHandler < MObject
+       OMF::Services::XmppEndpoint.borrow_connection
+       OMF::Services::XmppEndpoint.pubsub_selector { |opts|
+         #hrn = opts.nil? ? nil : opts["hrn"] || opts[:hrn] || opts["name"] || opts[:name]
+-        #node = hrn.nil? ? "/OMF/#{Experiment.sliceID}/resources" : "/OMF/#{Experiment.sliceID}/#{hrn}"
++        #node = hrn.nil? ? "/#{ROOT}/#{Experiment.sliceID}/resources" : "/#{ROOT}/#{Experiment.sliceID}/#{hrn}"
+         #node
+         # For now Service Calls are always sent to the AMs listening on the 
+         # resources pubsub node of the slice.
+-        "/OMF/#{Experiment.sliceID}/resources"
++        "/#{ROOT}/#{Experiment.sliceID}/resources"
+       }
+     end
+   end
+diff --git a/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb b/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
+index 7b3cfe7..5f3f7e9 100644
+--- a/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
++++ b/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
+@@ -31,7 +31,7 @@ module OMF::EC::OML
+ #    stream :logging
+ 
+     param :logger
+-    param :level, :type => :long
++    param :level, :type => :int32
+     param :level_name
+     param :data
+     param :tracer
+diff --git a/omf-oml/debian/changelog b/omf-oml/debian/changelog
+index 7658450..e5e5bb1 100644
+--- a/omf-oml/debian/changelog
++++ b/omf-oml/debian/changelog
+@@ -1,3 +1,9 @@
++omf-oml-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * version bump 
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Mon, 25 Jun 2012 16:57:57 +1000
++
+ omf-oml-5.4 (5.4-ubuntu2) oneiric; urgency=low
+ 
+   * 5.4.1 release
+diff --git a/omf-resctl/debian/changelog b/omf-resctl/debian/changelog
+index 3be2525..67a9f70 100644
+--- a/omf-resctl/debian/changelog
++++ b/omf-resctl/debian/changelog
+@@ -1,3 +1,9 @@
++omf-resctl-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * renamed root element in pubsub node
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Thu, 21 Jun 2012 18:51:57 +1000
++
+ omf-resctl-5.4 (5.4-ubuntu7) oneiric; urgency=low
+ 
+   * fixed typo 
+diff --git a/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb b/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
+index ad69f85..a43b7e6 100644
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
+@@ -95,7 +95,7 @@ module AgentCommands
+   #
+   def AgentCommands.ENROLL(communicator, command)
+     # Check if we are already 'enrolled' or not
+-    if controller.enrolled
++    if controller.enrolled and command.expID!=communicator.expID
+       msg = "Cannot ENROLL in experiment #{command.expID}, because still "+
+             "enrolled in #{communicator.expID}!"
+       MObject.debug("AgentCommands", msg)
+diff --git a/omf-resmgr/ruby/omf-resmgr/managerCommands.rb b/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
+index 90b7ac6..695c74e 100644
+--- a/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
++++ b/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
+@@ -73,7 +73,7 @@ module ManagerCommands
+           sliverName = "#{resourceName}_#{n}"
+         end
+       }
+-      # Create pubsub node "/OMF/#{slice}/resources/#{sliverName}"
++      # Create pubsub node "/OMF_x.x/#{slice}/resources/#{sliverName}"
+       # TODO: this doesn't work
+       addr = communicator.create_address(:sliceID => sliceName, :name => sliverName)
+       
+diff --git a/omf-web/debian/changelog b/omf-web/debian/changelog
+index 286713c..93f67a1 100644
+--- a/omf-web/debian/changelog
++++ b/omf-web/debian/changelog
+@@ -1,3 +1,9 @@
++omf-web-5.4 (5.4.2-ubuntu1) precise; urgency=low
++
++  * version bump
++
++ -- Christoph Dwertmann <christoph.dwertmann@nicta.com.au>  Mon, 25 Jun 2012 16:59:21 +1000
++
+ omf-web-5.4 (5.4-ubuntu5) oneiric; urgency=low
+ 
+   * Prevent erector's gemspec throwing unpleasant warning message under
+diff --git a/tools/createnode.rb b/tools/createnode.rb
+index 2763bf1..c84e780 100755
+--- a/tools/createnode.rb
++++ b/tools/createnode.rb
+@@ -2,18 +2,20 @@
+ 
+ require 'omf-common/communicator/omfPubSubMessage.rb'
+ require "pubsubTester"
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nicta.com.au", "norbit.npc.nicta.com.au", true)
+ 
+-#tester.create("/OMF/system/norbit.npc.nicta.com.au")
+-#tester.create("/OMF/omf.nicta.slice1/resources/omf.nicta.node30_3")
+-#tester.create("/OMF/omf.nicta.slice1/resources")
+-#tester.create("/OMF/system/node30")
++#tester.create("/#{ROOT}/system/norbit.npc.nicta.com.au")
++#tester.create("/#{ROOT}/omf.nicta.slice1/resources/omf.nicta.node30_3")
++#tester.create("/#{ROOT}/omf.nicta.slice1/resources")
++#tester.create("/#{ROOT}/system/node30")
+ 
+ 11.times { |n|
+-  puts "/OMF/omf.nicta.slice1/resources/#{n}"
++  puts "/#{ROOT}/omf.nicta.slice1/resources/#{n}"
+   begin
+-   tester.create("/OMF/omf.nicta.slice1/resources/#{n}")
++   tester.create("/#{ROOT}/omf.nicta.slice1/resources/#{n}")
+  rescue
+  end
+ }
+diff --git a/tools/createslice.rb b/tools/createslice.rb
+index 171143f..7e1e3e0 100755
+--- a/tools/createslice.rb
++++ b/tools/createslice.rb
+@@ -2,6 +2,8 @@
+ 
+ require 'omf-common/communicator/omfPubSubMessage.rb'
+ require "pubsubTester"
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ @slice = "omf.nicta.slice1"
+ @tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nicta.com.au", "norbit.npc.nicta.com.au", true)
+@@ -10,22 +12,22 @@ def create (hrn, ipaddr)
+   msg = @tester.newcmd(:cmdType => "CREATE_SLIVER", :target => "#{hrn}", :slicename => "#{@slice}", 
+   :resname => "#{hrn}", :slivertype => 'openvz', :commaddr => 'norbit.npc.nicta.com.au', 
+   :sliveraddress => "#{ipaddr}", :slivernameserver => '10.0.0.200')
+-  @tester.send("/OMF/system/#{hrn}", msg)
++  @tester.send("/#{OMF}/system/#{hrn}", msg)
+   msg = @tester.newcmd(:cmdType => "NOOP", :target => "#{hrn}")
+-  @tester.send("/OMF/system/#{hrn}", msg)
++  @tester.send("/#{OMF}/system/#{hrn}", msg)
+   # TODO: these nodes will be created by the RM in the future
+   # creating 5 slice nodes per host
+   1.upto(5) { |n|
+     begin
+-      @tester.create("/OMF/#{@slice}/resources/#{hrn}_#{n}")
++      @tester.create("/#{ROOT}/#{@slice}/resources/#{hrn}_#{n}")
+     rescue
+     end
+   }
+ end
+ 
+ begin
+-  @tester.create("/OMF/#{@slice}")
+-  @tester.create("/OMF/#{@slice}/resources")
++  @tester.create("/#{ROOT}/#{@slice}")
++  @tester.create("/#{ROOT}/#{@slice}/resources")
+ rescue
+ end
+ 
+@@ -48,4 +50,4 @@ create("omf.nicta.node28", "10.0.2.28")
+ # msg = tester.newcmd(:cmdType => "CREATE_SLIVER", :target => "norbit.npc.nicta.com.au", :slicename => 'omf.nicta.slice1', :resname => '8', :slivertype => 'openvz', :commaddr => 'norbit.npc.nicta.com.au')
+ # msg = tester.newcmd(:cmdType => "DELETE_SLIVER", :target => "norbit.npc.nicta.com.au", :resname => '8', :slicename => 'omf.nicta.slice1', :slivertype => 'openvz')
+ # msg = tester.newcmd(:cmdType => "NOOP", :target => "norbit.npc.nicta.com.au")
+-# tester.send("/OMF/system/node30", msg)
++# tester.send("/#{OMF}/system/node30", msg)
+diff --git a/tools/deleteslice.rb b/tools/deleteslice.rb
+index e889eea..0690d44 100755
+--- a/tools/deleteslice.rb
++++ b/tools/deleteslice.rb
+@@ -2,6 +2,8 @@
+ 
+ require 'omf-common/communicator/omfPubSubMessage.rb'
+ require "pubsubTester"
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ @slice = "omf.nicta.slice1"
+ @tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nicta.com.au", "norbit.npc.nicta.com.au", true)
+@@ -10,10 +12,10 @@ require "pubsubTester"
+ def delete(hrn, sliver)
+   msg = @tester.newcmd(:cmdType => "DELETE_SLIVER", :target => "#{hrn}", :slicename => "#{@slice}", :slivername => "#{sliver}", 
+   :slivertype => 'openvz')
+-  @tester.send("/OMF/system/#{hrn}", msg)
++  @tester.send("/#{ROOT}/system/#{hrn}", msg)
+ 
+   msg = @tester.newcmd(:cmdType => "NOOP", :target => "#{hrn}")
+-  @tester.send("/OMF/system/#{hrn}", msg)
++  @tester.send("/#{ROOT}/system/#{hrn}", msg)
+ end
+ 
+ delete("omf.nicta.node30", "omf.nicta.node30_1")
+diff --git a/tools/sliver.rb b/tools/sliver.rb
+index 81d3df1..248d7c2 100755
+--- a/tools/sliver.rb
++++ b/tools/sliver.rb
+@@ -2,6 +2,8 @@
+ 
+ require 'omf-common/communicator/omfPubSubMessage.rb'
+ require "pubsubTester"
++require 'omf-common/omfVersion'
++ROOT = "OMF_#{OMF::Common::MM_VERSION()}"
+ 
+ tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nicta.com.au", "norbit.npc.nicta.com.au", true)
+ 
+@@ -11,8 +13,8 @@ tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nict
+ msg = tester.newcmd(:cmdType => "DELETE_SLIVER", :target => "norbit.npc.nicta.com.au", :resname => '8', :slicename => 'omf.nicta.slice1', :slivertype => 'openvz')
+ 
+ 
+-tester.send("/OMF/system/omf.nicta.node30", msg)
++tester.send("/#{ROOT}/system/omf.nicta.node30", msg)
+ 
+ 
+ msg = tester.newcmd(:cmdType => "NOOP", :target => "norbit.npc.nicta.com.au")
+-tester.send("/OMF/system/omf.nicta.node30", msg)
++tester.send("/#{ROOT}/system/omf.nicta.node30", msg)
