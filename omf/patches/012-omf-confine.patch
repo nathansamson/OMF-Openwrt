@@ -12,3 +12,13 @@
    # FOR WINLAB...
    #
    # Substitute '%x%' by the X coordinate of this agent's node
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/nodeAgent.rb
+@@ -379,6 +379,7 @@ class NodeAgent < MObject
+     @config[:agent][:name].gsub!(/%hostname%/, `/usr/bin/hostname`.chomp)
+     @config[:agent][:name].gsub!(/%fqdn%/, `/usr/bin/hostname --fqdn`.chomp)
+     @config[:agent][:name].gsub!(/%macaddr%/, `ifconfig #{@config[:communicator][:control_if]} | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'`.chomp)
++    @config[:agent][:name].gsub!(/%omf_name%/, AgentSubstitutions.omf_name(nil))
+     @agentName = @config[:agent][:name] 
+     @agentSlice =  @config[:agent][:slice] 
+     @resizefs = @config[:agent][:resizefs] 
