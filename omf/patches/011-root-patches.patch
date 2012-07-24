@@ -6,9 +6,6 @@ Date:   Mon Jun 25 19:32:15 2012 +1000
     * EC's reset function will no longer send a RESET message to the RC, which is not necessary as it gets rebooted anyway
     * When the RC gets a second ENROL for the same experiment ID, it will not report this as an error
 
-diff --git a/build_debs.sh b/build_debs.sh
-new file mode 100755
-index 0000000..314b517
 --- /dev/null
 +++ b/build_debs.sh
 @@ -0,0 +1,14 @@
@@ -26,8 +23,6 @@ index 0000000..314b517
 +  cd ..
 +done
 +
-diff --git a/omf-aggmgr/debian/changelog b/omf-aggmgr/debian/changelog
-index a745e09..fc1402c 100644
 --- a/omf-aggmgr/debian/changelog
 +++ b/omf-aggmgr/debian/changelog
 @@ -1,3 +1,9 @@
@@ -40,8 +35,6 @@ index a745e09..fc1402c 100644
  omf-aggmgr-5.4 (5.4-ubuntu4) oneiric; urgency=low
  
    * 5.4.1 release 
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
-index 834dde0..3cfe04f 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/ogs.rb
 @@ -61,6 +61,7 @@ include WEBrick
@@ -61,8 +54,6 @@ index 834dde0..3cfe04f 100644
        }
  
        begin
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
-index 4059671..93f6c88 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/ogs/server.rb
 @@ -29,6 +29,7 @@ require 'omf-common/mobject'
@@ -82,8 +73,6 @@ index 4059671..93f6c88 100644
    SLICE_SUFFIX = "resources"
  
    attr_reader :domains, :connection
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb b/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
-index 5d48d27..7501637 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/ogs_sliceManager/sliceManager.rb
 @@ -26,9 +26,9 @@
@@ -143,8 +132,6 @@ index 5d48d27..7501637 100644
    end
  
    def self.resources_node(slice)
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb b/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
-index d1f2136..054bf52 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/omf_create_sysnode.rb
 @@ -23,6 +23,8 @@
@@ -192,7 +179,7 @@ index d1f2136..054bf52 100644
      begin
        mknode(n)
      rescue Exception => e
-@@ -159,19 +161,19 @@ command("mkslice <name> [resource*] -- create a slice node and nodes for the nam
+@@ -159,19 +161,19 @@ command("mkslice <name> [resource*] -- c
  do |args|
    slice = args[0]
    resources = args[1..-1]
@@ -217,8 +204,6 @@ index d1f2136..054bf52 100644
  do |args|
    args.each { |r| mknode(SYSTEM + r) }
  end
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb b/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
-index b470a55..e9497cc 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/test/test_service.rb
 @@ -1,6 +1,8 @@
@@ -245,8 +230,6 @@ index b470a55..e9497cc 100644
      end
    }
  
-diff --git a/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb b/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
-index 94aff8d..92efcff 100644
 --- a/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
 +++ b/omf-aggmgr/ruby/omf-aggmgr/test/test_sliceManager.rb
 @@ -1,6 +1,8 @@
@@ -273,8 +256,6 @@ index 94aff8d..92efcff 100644
      end
    }
  
-diff --git a/omf-common/debian/changelog b/omf-common/debian/changelog
-index 15129b7..b6158f4 100644
 --- a/omf-common/debian/changelog
 +++ b/omf-common/debian/changelog
 @@ -1,3 +1,9 @@
@@ -287,8 +268,6 @@ index 15129b7..b6158f4 100644
  omf-common-5.4 (5.4-ubuntu5) oneiric; urgency=low
  
    * Fixed bug #478
-diff --git a/omf-common/debian/rules b/omf-common/debian/rules
-index 4f0e8e9..136b7e4 100755
 --- a/omf-common/debian/rules
 +++ b/omf-common/debian/rules
 @@ -52,7 +52,6 @@ install: build
@@ -299,8 +278,6 @@ index 4f0e8e9..136b7e4 100755
  	(cd debian/$(PKG_NAME)/usr/share/$(PKG_NAME); $(PWD)/../gem-package.sh)
  
  # Build architecture-independent files here.
-diff --git a/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb b/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
-index 35e4349..36f7d36 100644
 --- a/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
 +++ b/omf-common/ruby/omf-common/communicator/omfPubSubAddress.rb
 @@ -30,11 +30,12 @@
@@ -317,8 +294,6 @@ index 35e4349..36f7d36 100644
    RESOURCE = "resources"
    SYSTEM = "system"
  
-diff --git a/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb b/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
-index f686b24..f6fb095 100644
 --- a/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
 +++ b/omf-common/ruby/omf-common/communicator/xmpp/xmpp.rb
 @@ -2,6 +2,8 @@ require 'rubygems'
@@ -362,11 +337,9 @@ index f686b24..f6fb095 100644
  
    while msg = listener.queue.pop
      puts "RECEIVED:  #{msg.to_s}"
-diff --git a/omf-common/ruby/omf-common/servicecall/xmpp.rb b/omf-common/ruby/omf-common/servicecall/xmpp.rb
-index 6dce5d1..18e2588 100644
 --- a/omf-common/ruby/omf-common/servicecall/xmpp.rb
 +++ b/omf-common/ruby/omf-common/servicecall/xmpp.rb
-@@ -31,6 +31,8 @@ require 'omf-common/servicecall/endpoint'
+@@ -31,6 +31,8 @@ require 'omf-common/servicecall/endpoint
  
  require 'omf-common/communicator/xmpp/xmpp'
  require 'omf-common/communicator/xmpp/omfPubSubTransport'
@@ -384,8 +357,6 @@ index 6dce5d1..18e2588 100644
  #puts ">>>>> TDB - XMPP - send_request - psnode: '#{pubsub_node}'"
  
          if args.length == 1 and args[0].kind_of? Hash
-diff --git a/omf-expctl/debian/changelog b/omf-expctl/debian/changelog
-index 6647557..af5f89e 100644
 --- a/omf-expctl/debian/changelog
 +++ b/omf-expctl/debian/changelog
 @@ -1,3 +1,9 @@
@@ -398,8 +369,6 @@ index 6647557..af5f89e 100644
  omf-expctl-5.4 (5.4-ubuntu6) oneiric; urgency=low
  
    * follow up on #478
-diff --git a/omf-expctl/ruby/omf-expctl/node/node.rb b/omf-expctl/ruby/omf-expctl/node/node.rb
-index 2c59719..a445e38 100644
 --- a/omf-expctl/ruby/omf-expctl/node/node.rb
 +++ b/omf-expctl/ruby/omf-expctl/node/node.rb
 @@ -519,7 +519,6 @@ class OMF::EC::Node < MObject
@@ -410,11 +379,9 @@ index 2c59719..a445e38 100644
        changed
        notify_observers(self, :before_resetting_node)
        setStatus(STATUS_RESET)
-diff --git a/omf-expctl/ruby/omf-expctl/nodeHandler.rb b/omf-expctl/ruby/omf-expctl/nodeHandler.rb
-index f59acd1..fb168c0 100644
 --- a/omf-expctl/ruby/omf-expctl/nodeHandler.rb
 +++ b/omf-expctl/ruby/omf-expctl/nodeHandler.rb
-@@ -733,11 +733,11 @@ class NodeHandler < MObject
+@@ -725,11 +725,11 @@ class NodeHandler < MObject
        OMF::Services::XmppEndpoint.borrow_connection
        OMF::Services::XmppEndpoint.pubsub_selector { |opts|
          #hrn = opts.nil? ? nil : opts["hrn"] || opts[:hrn] || opts["name"] || opts[:name]
@@ -428,21 +395,6 @@ index f59acd1..fb168c0 100644
        }
      end
    end
-diff --git a/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb b/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
-index 7b3cfe7..5f3f7e9 100644
---- a/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
-+++ b/omf-expctl/ruby/omf-expctl/oml/oml_outputter.rb
-@@ -31,7 +31,7 @@ module OMF::EC::OML
- #    stream :logging
- 
-     param :logger
--    param :level, :type => :long
-+    param :level, :type => :int32
-     param :level_name
-     param :data
-     param :tracer
-diff --git a/omf-oml/debian/changelog b/omf-oml/debian/changelog
-index 7658450..e5e5bb1 100644
 --- a/omf-oml/debian/changelog
 +++ b/omf-oml/debian/changelog
 @@ -1,3 +1,9 @@
@@ -455,8 +407,6 @@ index 7658450..e5e5bb1 100644
  omf-oml-5.4 (5.4-ubuntu2) oneiric; urgency=low
  
    * 5.4.1 release
-diff --git a/omf-resctl/debian/changelog b/omf-resctl/debian/changelog
-index 3be2525..67a9f70 100644
 --- a/omf-resctl/debian/changelog
 +++ b/omf-resctl/debian/changelog
 @@ -1,3 +1,9 @@
@@ -469,8 +419,6 @@ index 3be2525..67a9f70 100644
  omf-resctl-5.4 (5.4-ubuntu7) oneiric; urgency=low
  
    * fixed typo 
-diff --git a/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb b/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
-index ad69f85..a43b7e6 100644
 --- a/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
 +++ b/omf-resctl/ruby/omf-resctl/omf_agent/agentCommands.rb
 @@ -95,7 +95,7 @@ module AgentCommands
@@ -482,8 +430,6 @@ index ad69f85..a43b7e6 100644
        msg = "Cannot ENROLL in experiment #{command.expID}, because still "+
              "enrolled in #{communicator.expID}!"
        MObject.debug("AgentCommands", msg)
-diff --git a/omf-resmgr/ruby/omf-resmgr/managerCommands.rb b/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
-index 90b7ac6..695c74e 100644
 --- a/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
 +++ b/omf-resmgr/ruby/omf-resmgr/managerCommands.rb
 @@ -73,7 +73,7 @@ module ManagerCommands
@@ -495,8 +441,6 @@ index 90b7ac6..695c74e 100644
        # TODO: this doesn't work
        addr = communicator.create_address(:sliceID => sliceName, :name => sliverName)
        
-diff --git a/omf-web/debian/changelog b/omf-web/debian/changelog
-index 286713c..93f67a1 100644
 --- a/omf-web/debian/changelog
 +++ b/omf-web/debian/changelog
 @@ -1,3 +1,9 @@
@@ -509,8 +453,6 @@ index 286713c..93f67a1 100644
  omf-web-5.4 (5.4-ubuntu5) oneiric; urgency=low
  
    * Prevent erector's gemspec throwing unpleasant warning message under
-diff --git a/tools/createnode.rb b/tools/createnode.rb
-index 2763bf1..c84e780 100755
 --- a/tools/createnode.rb
 +++ b/tools/createnode.rb
 @@ -2,18 +2,20 @@
@@ -540,8 +482,6 @@ index 2763bf1..c84e780 100755
   rescue
   end
  }
-diff --git a/tools/createslice.rb b/tools/createslice.rb
-index 171143f..7e1e3e0 100755
 --- a/tools/createslice.rb
 +++ b/tools/createslice.rb
 @@ -2,6 +2,8 @@
@@ -587,8 +527,6 @@ index 171143f..7e1e3e0 100755
  # msg = tester.newcmd(:cmdType => "NOOP", :target => "norbit.npc.nicta.com.au")
 -# tester.send("/OMF/system/node30", msg)
 +# tester.send("/#{OMF}/system/node30", msg)
-diff --git a/tools/deleteslice.rb b/tools/deleteslice.rb
-index e889eea..0690d44 100755
 --- a/tools/deleteslice.rb
 +++ b/tools/deleteslice.rb
 @@ -2,6 +2,8 @@
@@ -613,8 +551,6 @@ index e889eea..0690d44 100755
  end
  
  delete("omf.nicta.node30", "omf.nicta.node30_1")
-diff --git a/tools/sliver.rb b/tools/sliver.rb
-index 81d3df1..248d7c2 100755
 --- a/tools/sliver.rb
 +++ b/tools/sliver.rb
 @@ -2,6 +2,8 @@
@@ -626,7 +562,7 @@ index 81d3df1..248d7c2 100755
  
  tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nicta.com.au", "norbit.npc.nicta.com.au", true)
  
-@@ -11,8 +13,8 @@ tester = PubSubTester.new("omf@norbit.npc.nicta.com.au", "omf", "norbit.npc.nict
+@@ -11,8 +13,8 @@ tester = PubSubTester.new("omf@norbit.np
  msg = tester.newcmd(:cmdType => "DELETE_SLIVER", :target => "norbit.npc.nicta.com.au", :resname => '8', :slicename => 'omf.nicta.slice1', :slivertype => 'openvz')
  
  

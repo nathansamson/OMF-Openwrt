@@ -1,0 +1,14 @@
+--- a/omf-resctl/ruby/omf-resctl/omf_agent/agentSubstitution.rb
++++ b/omf-resctl/ruby/omf-resctl/omf_agent/agentSubstitution.rb
+@@ -53,6 +53,11 @@ module AgentSubstitutions
+     return `/usr/bin/hostname`.chomp
+   end
+ 
++  def AgentSubstitutions.omf_name(controller)
++    hn = AgentSubstitutions.hostname(controller)
++    return `/sbin/uci -c /root/confine/uci/ get confine-slice-attributes.#{hn}.omf_name`
++  end
++
+   # FOR WINLAB...
+   #
+   # Substitute '%x%' by the X coordinate of this agent's node
