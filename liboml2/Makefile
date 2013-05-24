@@ -43,6 +43,8 @@ conceived to provide measurement facilities within the OMF Testbed Management
 Framework, but can also be run independent of OMF.
 endef
 
+TARGET_LDFLAGS += -lm
+
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
 	$(CP) \

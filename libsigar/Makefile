@@ -15,9 +15,13 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+TARGET_LDFLAGS += $(LIBRPC)
+
 define Package/libsigar
   SECTION:=libs
   CATEGORY:=Libraries
+  DEPENDS:=+USE_UCLIBC:librpc
   DEFAULT:=n
   TITLE:=SIGAR - System Information Gatherer And Reporter
   URL:=http://support.hyperic.com/display/SIGAR/Home
