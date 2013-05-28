@@ -22,7 +22,7 @@ define Package/oml2-apps
   DEFAULT:=n
   TITLE:=OML2 Applications
   URL:=http://mytestbed.net
-  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd +libsigar +libpcap
+  DEPENDS:=+libxml2 +libsqlite3 +libpopt +liboml2 +gpsd +libsigar +libpcap +USE_UCLIBC:librpc
 endef
 
 define Package/oml2-apps/description
@@ -43,6 +43,9 @@ It consists of the following applications.
     ripwavemon
 
 endef
+
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+TARGET_LDFLAGS += -lm $(LIBRPC)
 
 define Package/oml2-apps/install
 	$(INSTALL_DIR) $(1)/usr/lib/otg2

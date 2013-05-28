@@ -23,8 +23,10 @@ define Package/oml-iperf
   DEFAULT:=n
   TITLE:=OML2 IPerf
   URL:=http://mytestbed.net
-  DEPENDS:=+liboml2 +USE_UCLIBC:uclibcxx +!USE_UCLIBC:libstdcpp
+  DEPENDS:=+liboml2 +USE_UCLIBC:uclibcxx +!USE_UCLIBC:libstdcpp +libpthread
 endef
+
+TARGET_LDFLAGS += -lpthread
 
 ifdef CONFIG_USE_UCLIBC
   TARGET_CXX=g++-uc
